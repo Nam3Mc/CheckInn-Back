@@ -25,14 +25,54 @@ export class ReservationsRepository {
     }
     return reservation;
   }
-  async create(
-    createReservationDto: CreateReservationDto,
-  ): Promise<Reservation> {
-    const newReservation =
-      this.reservationsRepository.create(createReservationDto);
-    return this.reservationsRepository.save(newReservation);
-  }
+  async addReservation(accountId: string, roomId: string, nights: number) {
+    let total = 0;
 
+    const account = await this.accountsRepository.findOne({
+      where: { id: accountId },
+    });
+    if (!account) {
+      throw new NotFoundException(`Cuenta con id: ${accountId} no encontrada.`);
+    }
+
+    const room = await this.roomsRepository.findOne({
+      where: { id: roomId },
+    });
+    if (!room) {
+      throw new NotFoundException(
+        `Habitación con id: ${roomId} no encontrada.`,
+      );
+    }
+    if (room.status !== 'available') {
+      throw new NotFoundException(
+        `La habitación con id: ${roomId} no está disponible.`,
+      );
+    }
+
+    const roomTotal = Number(room.pricePerNight) * nights;
+    total = roomTotal;
+
+    const reservation = new Reservation();
+    reservation.checkin = new Date();
+    reservation.checkout = null;
+    reservation.price = total;
+    reservation.account = account;
+    reservation.status = true;
+    reservation.room = room;
+    reservation.guests = 1;
+
+    const newReservation = await this.reservationsRepository.save(reservation);
+
+    const reservationWithRelations = await this.reservationsRepository.findOne({
+      where: { id: newReservation.id },
+      relations: ['room'],
+    });
+
+    return {
+      reservation: reservationWithRelations,
+      total: total.toFixed(2),
+    };
+  }
   async update(
     id: string,
     updateReservationDto: UpdateReservationDto,
