@@ -3,7 +3,7 @@ import { Room } from './rooms.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: 'users',
+  name: 'reservations',
 })
 export class Reservation {
   @PrimaryGeneratedColumn('uuid')
