@@ -16,11 +16,12 @@ export class UsersController {
   return this.usersService.getUsersService(1, 3);
 }
  
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.createUser(createUserDto);
-  // }
+  @Post()
+  addUserController(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.addUserService(createUserDto);
+  }
 
+ 
 
   @Get(':email')
   findOne(@Param('email') email: string) {

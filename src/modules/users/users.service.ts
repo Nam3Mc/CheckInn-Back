@@ -9,9 +9,15 @@ export class UsersService {
   constructor( private readonly usersRepository: UsersRepository ){}
 
 
-  createUser(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  // createUser(createUserDto: CreateUserDto) {
+  //   return 'This action adds a new user';
+  // }
+
+  async addUserService(createUserDto: CreateUserDto): Promise<User> {
+    const newUser = await this.usersRepository.addUser(createUserDto as User);
+    return newUser;
   }
+
 
   async getUsersService(page: number, limit: number): Promise<User[]> {
     return this.usersRepository.getUsers(page, limit);
