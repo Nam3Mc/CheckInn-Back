@@ -25,4 +25,6 @@ export class ReservationsRepository {
     const reservation = await this.reservationsRepository.findOneBy({ id });
     this.reservationsRepository.remove(reservation);
   }
+
+  async;
 }
