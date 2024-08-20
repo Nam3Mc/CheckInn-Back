@@ -27,9 +27,9 @@ export class Account {
   @OneToMany(() => Reservation, (reservation) => reservation.account)
   reservation_: Reservation[];
 
-  @ManyToOne(() => User, (user) => user.account_)
+  @ManyToOne(() => User, (user) => user.account)
   user_: User;
 
   @OneToOne()
-  inbox_: Inbox;
+  inbox: Inbox;
 }

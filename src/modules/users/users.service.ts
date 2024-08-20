@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from '../dto/users.dto';
 import { UsersRepository, User } from './user.repository';
 
 @Injectable()
@@ -27,9 +26,9 @@ export class UsersService {
     return user 
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return `This action updates a #${id} user`;
+  // }
 
   async deleteUserService(id: number): Promise<{ message: string }> {
     const result = await this.usersRepository.deleteUser(id);
