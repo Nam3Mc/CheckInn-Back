@@ -1,36 +1,34 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-import { Account } from "./accounts.entity"
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Account } from './accounts.entity';
 
 export enum Roll {
-    ADMIM = "admin",
-    GUEST = "guest",
-    USER = "user"
+  ADMIM = 'admin',
+  GUEST = 'guest',
+  USER = 'user',
 }
 
 @Entity({
-    name: "users"
+  name: 'users',
 })
-
 export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id: string
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({ default: Roll.USER })
-    roll: Roll
+  @Column({ default: Roll.USER })
+  roll: Roll;
 
-    @Column({ length: 50, nullable: false})
-    name: string
+  @Column({ length: 50, nullable: false })
+  name: string;
 
-    @Column({ length: 50, nullable: false})
-    email: string
+  @Column({ length: 50, nullable: false })
+  email: string;
 
-    @Column({ length: 50, nullable: false})
-    phone: number
-    
-    @Column({ length: 50, nullable: false})
-    password: string
+  @Column({ length: 50, nullable: false })
+  phone: number;
 
-    @OneToMany( () => Account, (account) => account.user_)
-    account_ : Account []
+  @Column({ length: 50, nullable: false })
+  password: string;
 
+  @OneToMany(() => Account, (account) => account.user_)
+  account_: Account[];
 }

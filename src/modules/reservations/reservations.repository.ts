@@ -1,16 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Reservation } from '../entities/reservations.entity';
 
 @Injectable()
 export class ReservationsRepository {
   constructor(
-    @InjectRepository(Reservations)
-    private reservationsRepository: Repository<Reservations>,
+    @InjectRepository(Reservation)
+    private reservationsRepository: Repository<Reservation>,
   ) {}
 
   async findAll() {
-    return this.reservationsRepository.reservations;
+    return this.reservationsRepository.reservation;
   }
 
   async findOne(id: string) {
