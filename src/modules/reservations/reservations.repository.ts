@@ -2,16 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from '../entities/reservations.entity';
-import {
-  CreateReservationDto,
-  UpdateReservationDto,
-} from '../dto/reservations.dto';
+import { UpdateReservationDto } from '../dto/reservations.dto';
+import { AccountsRepository } from '../accounts/accounts.repository';
 
 @Injectable()
 export class ReservationsRepository {
   constructor(
     @InjectRepository(Reservation)
     private readonly reservationsRepository: Repository<Reservation>,
+    private readonly accountsRepository: AccountsRepository,
   ) {}
 
   async findAll() {
@@ -28,16 +27,12 @@ export class ReservationsRepository {
   async addReservation(accountId: string, roomId: string, nights: number) {
     let total = 0;
 
-    const account = await this.accountsRepository.findOne({
-      where: { id: accountId },
-    });
+    const account = await this.accountsRepository.findOne(accountId);
     if (!account) {
       throw new NotFoundException(`Cuenta con id: ${accountId} no encontrada.`);
     }
 
-    const room = await this.roomsRepository.findOne({
-      where: { id: roomId },
-    });
+    const room = await this.roomsRepository.findOne(roomId);
     if (!room) {
       throw new NotFoundException(
         `Habitación con id: ${roomId} no encontrada.`,
