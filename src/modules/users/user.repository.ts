@@ -13,7 +13,6 @@ export type User = {
 
 @Injectable()
 export class UsersRepository {
- 
   private users: User[] = [
     {
       id: 1,
@@ -114,9 +113,9 @@ export class UsersRepository {
     const end = start + limit;
     return this.users.slice(start, end);
   }
-  
+
   async getById(id: number) {
-    return this.users.find(user => user.id === id);
+    return this.users.find((user) => user.id === id);
   }
 
   addUser(user: User) {
@@ -127,27 +126,27 @@ export class UsersRepository {
   }
 
   updateUser(id: number, user: User) {
-    const oldUser = this.users.find(user => user.id === id);
+    const oldUser = this.users.find((user) => user.id === id);
     if (!oldUser) {
       throw new BadRequestException('User not found');
     }
     const updatedUser = { ...oldUser, ...user };
-    const index = this.users.findIndex(user => user.id === id);
+    const index = this.users.findIndex((user) => user.id === id);
     this.users[index] = updatedUser;
     return updatedUser;
   }
 
   deleteUser(id: number) {
-   const index = this.users.findIndex(user => user.id === id);
-   if(index === -1){
-    throw new BadRequestException("User not found")
-   } 
-   const user = this.users[index];
-   this.users.splice(index,1)
-   return {message: "User Deleted ", user}
+    const index = this.users.findIndex((user) => user.id === id);
+    if (index === -1) {
+      throw new BadRequestException('User not found');
+    }
+    const user = this.users[index];
+    this.users.splice(index, 1);
+    return { message: 'User Deleted ', user };
   }
 
   getUserByEmail(email: string): User | undefined {
-    return this.users.find(user => user.email === email);
+    return this.users.find((user) => user.email === email);
   }
 }

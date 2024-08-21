@@ -4,9 +4,7 @@ import { UsersRepository, User } from './user.repository';
 
 @Injectable()
 export class UsersService {
-
-  constructor( private readonly usersRepository: UsersRepository ){}
-
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   // createUser(createUserDto: CreateUserDto) {
   //   return 'This action adds a new user';
@@ -17,19 +15,17 @@ export class UsersService {
     return newUser;
   }
 
-
   async getUsersService(page: number, limit: number): Promise<User[]> {
     return this.usersRepository.getUsers(page, limit);
   }
 
+  async getUsersByEmailService(email: string): Promise<User | null> {
+    const user = await this.usersRepository.getUserByEmail(email);
 
-  async getUsersByEmailService(email:string):Promise<User | null>{
-    const user = await this.usersRepository.getUserByEmail(email)
-
-    if (!user ){
-     throw new BadRequestException ("User doens´t exists")
+    if (!user) {
+      throw new BadRequestException('User doens´t exists');
     }
-    return user 
+    return user;
   }
 
   // update(id: number, updateUserDto: UpdateUserDto) {
