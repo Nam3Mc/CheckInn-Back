@@ -16,6 +16,9 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ type: 'number'})
+  name: number;
+
   @Column({ type: 'text' })
   description: string;
 
