@@ -12,7 +12,4 @@ export class Amenity {
 
     @Column({type: "boolean", nullable: false})
     airConditioner: boolean;
-
-    @Column({type: "int", nullable: false})
-    beds: number;
 }

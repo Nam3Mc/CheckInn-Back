@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, IsBoolean } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsBoolean, IsEmpty } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -25,7 +25,7 @@ export class CreateUserDto {
   @IsString()
   city?: string;
 
-  @IsOptional()
   @IsBoolean()
-  isAdmin?: boolean; // Cambiado a @IsOptional() y @IsBoolean()
+  @IsEmpty()
+  isAdmin?: boolean = false; // Cambiado a @IsOptional() y @IsBoolean()
 }
