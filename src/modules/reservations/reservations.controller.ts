@@ -28,8 +28,9 @@ export class ReservationsController {
   }
 
   @Post()
-  async create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationsService.create(createReservationDto);
+  addReservation(@Body() reservation: CreateReservationDto) {
+    const { accountId, roomId, nights } = reservation;
+    return this.reservationsService.addReservation(accountId, roomId, nights);
   }
 
   @Put(':id')

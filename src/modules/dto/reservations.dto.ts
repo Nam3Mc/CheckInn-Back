@@ -32,6 +32,11 @@ export class CreateReservationDto {
   @IsNotEmpty()
   @IsString()
   roomId: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  nights: number;
+
   @IsOptional()
   @IsNumber()
   guests?: number;
