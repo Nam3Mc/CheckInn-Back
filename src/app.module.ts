@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeorm from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { accountsModule } from './modules/accounts/accounts.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     RoomsModule,
     AuthModule,
     ReservationsModule,
+    accountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

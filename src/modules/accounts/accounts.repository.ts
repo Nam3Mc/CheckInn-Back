@@ -17,4 +17,7 @@ export class AccountsRepository {
     }
     return account;
   }
+  async findAccounts(): Promise<Account[]> {
+    return this.accountsRepository.find();
+  }
 }

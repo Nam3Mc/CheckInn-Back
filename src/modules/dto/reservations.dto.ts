@@ -7,6 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
+import { Type } from 'class-transformer';
 
 export class CreateReservationDto {
   @IsNotEmpty()
@@ -19,10 +20,12 @@ export class CreateReservationDto {
 
   @IsNotEmpty()
   @IsDate()
+  @Type(() => Date)
   checkin: Date;
 
   @IsNotEmpty()
   @IsDate()
+  @Type(() => Date)
   checkout: Date;
 
   @IsNotEmpty()
