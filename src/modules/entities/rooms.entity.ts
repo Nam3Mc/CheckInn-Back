@@ -16,7 +16,7 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'varchar' })
   name: number;
 
   @Column({ type: 'text' })
