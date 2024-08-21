@@ -50,7 +50,7 @@ export class ReservationsRepository {
       );
     }
 
-    const roomTotal = Number(room.pricePerNight) * nights;
+    const roomTotal = Number(room.price) * nights;
     total = roomTotal;
 
     const reservation = new Reservation();

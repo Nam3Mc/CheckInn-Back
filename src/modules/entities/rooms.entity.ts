@@ -7,11 +7,13 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity({
   name: 'rooms',
 })
+@Unique(['name'])
 export class Room {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -22,7 +24,7 @@ export class Room {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({})
+  @Column()
   beds: number;
 
   @Column()
@@ -35,9 +37,9 @@ export class Room {
   capacity: number;
 
   @Column()
-  pricePerNight: number;
+  price: number;
 
-  @Column()
+  @Column({ default: 'available' })
   status: string;
 
   @OneToMany(() => Reservation, (reservation) => reservation.room)
