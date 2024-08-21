@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Reservation } from '../entities/reservations.entity';
 import { UpdateReservationDto } from '../dto/reservations.dto';
 import { AccountsRepository } from '../accounts/accounts.repository';
+import { Room } from '../entities/rooms.entity';
 
 @Injectable()
 export class ReservationsRepository {
@@ -11,6 +12,9 @@ export class ReservationsRepository {
     @InjectRepository(Reservation)
     private readonly reservationsRepository: Repository<Reservation>,
     private readonly accountsRepository: AccountsRepository,
+
+    @InjectRepository(Room)
+    private readonly roomsRepository: Repository<Room>,
   ) {}
 
   async findAll() {
@@ -32,7 +36,9 @@ export class ReservationsRepository {
       throw new NotFoundException(`Cuenta con id: ${accountId} no encontrada.`);
     }
 
-    const room = await this.roomsRepository.findOne(roomId);
+    const room = await this.roomsRepository.findOne({
+      where: { id: roomId },
+    });
     if (!room) {
       throw new NotFoundException(
         `Habitación con id: ${roomId} no encontrada.`,

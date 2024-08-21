@@ -16,7 +16,7 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'number'})
+  @Column({ type: 'number' })
   name: number;
 
   @Column({ type: 'text' })
@@ -35,7 +35,10 @@ export class Room {
   capacity: number;
 
   @Column()
-  price: number;
+  pricePerNight: number;
+
+  @Column()
+  status: string;
 
   @OneToMany(() => Reservation, (reservation) => reservation.room)
   reservation: Reservation[];
