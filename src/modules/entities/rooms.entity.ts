@@ -32,7 +32,7 @@ export class Room {
   capacity: number;
 
   @Column()
-  peice: number;
+  price: number;
 
   @OneToMany(() => Reservation, (reservation) => reservation.room)
   reservation: Reservation[];
