@@ -1,22 +1,12 @@
-import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { RoomService } from './rooms.service';
 
-@Controller('seed')
+@Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomSeeder: RoomService) {}
 
-  @Get('rooms')
-  async seedRooms() {
-    try {
-      const result = await this.roomSeeder.seedRooms();
-      return {
-        message: result,
-      };
-    } catch (error) {
-      throw new HttpException(
-        'Failed to seed rooms: ' + error.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+  @Get('seeder')
+  seedRooms() {
+    return this.roomSeeder.seedRooms()
   }
 }

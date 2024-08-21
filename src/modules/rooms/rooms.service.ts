@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../entities/rooms.entity';
-import * as fs from 'fs';
 import * as path from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class RoomService {
@@ -13,8 +13,7 @@ export class RoomService {
   ) {}
 
   async seedRooms() {
-    const filePath = path.join(__dirname, 'rooms.json');
-
+    const filePath = path.join(__dirname, '..', '..', '..', 'src/rooms.json');
     const roomsData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
     for (const roomData of roomsData) {
@@ -25,7 +24,7 @@ export class RoomService {
       room.baths = roomData.baths;
       room.photos = roomData.photos;
       room.capacity = roomData.capacity;
-      room.pricePerNight = roomData.price;
+      room.price = roomData.price;
 
       await this.roomRepository
         .createQueryBuilder()
