@@ -18,8 +18,8 @@ export class ReservationsService {
     return this.reservationsRepository.findOne(id);
   }
 
-  create(createReservationDto: CreateReservationDto) {
-    return this.reservationsRepository.create(createReservationDto);
+  addReservation() {
+    return this.reservationsRepository.addReservation(createReservationDto);
   }
 
   async update(id: string, updateReservationDto: UpdateReservationDto) {
