@@ -1,9 +1,9 @@
 import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { RoomSeeder } from './rooms.service';
+import { RoomService } from './rooms.service';
 
 @Controller('seed')
-export class SeedController {
-  constructor(private readonly roomSeeder: RoomSeeder) {}
+export class RoomsController {
+  constructor(private readonly roomSeeder: RoomService) {}
 
   @Get('rooms')
   async seedRooms() {
