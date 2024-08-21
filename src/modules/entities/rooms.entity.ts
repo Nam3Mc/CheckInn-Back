@@ -40,9 +40,9 @@ export class Room {
   @OneToMany(() => Reservation, (reservation) => reservation.room)
   reservation: Reservation[];
 
-  // @ManyToMany(() => Amenity, (amenity) => amenity.room_)
-  // amenities: Amenity[];
+  @ManyToMany(() => Amenity, (amenity) => amenity.room)
+  amenities: Amenity[];
 
-  @OneToMany(() => Comment, (comments) => comments.room_)
-  comments_: Comment[];
+  @OneToMany(() => Comment, (comments) => comments.room)
+  comments: Comment[];
 }

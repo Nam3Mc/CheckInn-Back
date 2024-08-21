@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Room } from "./rooms.entity";
 
 @Entity({
     name: "amenities",
@@ -12,4 +13,7 @@ export class Amenity {
 
     @Column({type: "boolean", nullable: false})
     airConditioner: boolean;
+
+    @ManyToMany(()=>Room,(room)=>room.amenities)
+    room:Room
 }

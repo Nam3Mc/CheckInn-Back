@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Account } from './accounts.entity';
 import { Room } from './rooms.entity';
+import { Inbox } from './inbox.entity';
 
 @Entity({
   name: 'comments',
@@ -15,9 +16,13 @@ export class Comment {
   @Column({ type: 'float', nullable: false })
   rate: number;
 
-  @ManyToOne(() => Account, (account) => account.comments_)
-  account_: Account;
+  @ManyToOne(() => Account, (account) => account.comments)
+  account: Account;
 
-  @ManyToOne(() => Room, (room) => room.comments_)
-  room_: Room;
+  @ManyToOne(() => Room, (room) => room.comments)
+  room: Room;
+ 
+  @OneToMany(()=>Inbox,(inbox)=>inbox.comment)
+  inbox: Inbox
+
 }

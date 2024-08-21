@@ -21,15 +21,23 @@ export class Account {
   @Column({ length: 50, nullable: false })
   photo: string;
 
-  @OneToMany(() => Comment, (comment) => comment.account_)
-  comments_: Comment[];
+  // Relación uno a muchos con la entidad Comment.
+  // Un Account puede tener múltiples comentarios asociados.
+  @OneToMany(() => Comment, (comment) => comment.account)
+  comments: Comment[];
 
+  // Relación uno a muchos con la entidad Reservation.
+  // Un Account puede tener múltiples reservas asociadas.
   @OneToMany(() => Reservation, (reservation) => reservation.account)
   reservation_: Reservation[];
 
-  @ManyToOne(() => User, (user) => user.account)
-  user_: User;
+  // Relación muchos a uno con la entidad User.
+  // Muchos Accounts pueden estar asociados a un solo User.
+  @ManyToOne(() => User, (user) => user.accounts)
+  user: User;
 
-  // @OneToOne()
-  // inbox: Inbox;
+  // Relación uno a uno con la entidad Inbox.
+  // Un Account tiene un solo Inbox y un Inbox pertenece a un solo Account.
+  @OneToOne(() => Inbox, (inbox) => inbox.account)
+  inbox: Inbox;
 }
