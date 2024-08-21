@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 @Injectable()
-export class RoomSeeder {
+export class RoomService {
   constructor(
     @InjectRepository(Room)
     private readonly roomRepository: Repository<Room>,
@@ -25,7 +25,7 @@ export class RoomSeeder {
       room.baths = roomData.baths;
       room.photos = roomData.photos;
       room.capacity = roomData.capacity;
-      room.price = roomData.price;
+      room.pricePerNight = roomData.price;
 
       await this.roomRepository
         .createQueryBuilder()
@@ -33,7 +33,7 @@ export class RoomSeeder {
         .into(Room)
         .values(room)
         .orUpdate(
-          ['description', 'beds', 'baths', 'photos', 'capacity', 'price'], 
+          ['description', 'beds', 'baths', 'photos', 'capacity', 'price'],
           ['name'],
         )
         .execute();
