@@ -30,6 +30,6 @@ export class Account {
   @ManyToOne(() => User, (user) => user.account)
   user_: User;
 
-  @OneToOne()
-  inbox: Inbox;
+  // @OneToOne()
+  // inbox: Inbox;
 }
