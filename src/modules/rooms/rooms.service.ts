@@ -49,5 +49,12 @@ export class RoomService {
     rooms = rooms.slice(start, end);
 
     return rooms;
-}
+  }
+
+  async getRoom(id: string) {
+    let room = await this.roomRepository.findOne({
+      where: { id }
+    })
+    return room;
+  }
 }
