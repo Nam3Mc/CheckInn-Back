@@ -1,39 +1,46 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dto/users.dto';
-import { UsersRepository, User } from './user.repository';
+
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../entities/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(
+  @InjectRepository(User) private userRepository:Repository<User>
+  ) {}
 
-  // createUser(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
 
-  async addUserService(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = await this.usersRepository.addUser(createUserDto as User);
-    return newUser;
+  async addUserService(user: Partial<User>): Promise<Omit<User, 'roll' | 'password'>> {
+    const newUser = await this.userRepository.save(user);
+  
+    const { roll, password, ...userWithoutSensitiveInfo } = newUser;
+  
+    return userWithoutSensitiveInfo;
   }
-
+  
   async getUsersService(page: number, limit: number): Promise<User[]> {
-    return this.usersRepository.getUsers(page, limit);
-  }
-
-  async getUsersByEmailService(email: string): Promise<User | null> {
-    const user = await this.usersRepository.getUserByEmail(email);
-
-    if (!user) {
-      throw new BadRequestException('User doens´t exists');
+    const users = await this.userRepository.find();
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    return users.slice(start, end); 
     }
-    return user;
-  }
 
+    
+    async getUsersByEmailService(email: string, options?: { relations: string[] }): Promise<User | undefined> {
+      return this.userRepository.findOne({
+        where: { email },
+        ...options,
+      });
+    }
+  
+  
   // update(id: number, updateUserDto: UpdateUserDto) {
   //   return `This action updates a #${id} user`;
   // }
 
-  async deleteUserService(id: number): Promise<{ message: string }> {
-    const result = await this.usersRepository.deleteUser(id);
+  async deleteUserService(id: string): Promise<{ message: string }> {
+    const result = await this.userRepository.delete(id);
     return result ? { message: 'User Deleted' } : { message: 'User not found' };
   }
 }

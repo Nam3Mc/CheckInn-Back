@@ -1,11 +1,8 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsEmpty,
-  IsBoolean,
-} from 'class-validator';
+import { MaxLength, MinLength, Validate, Matches, IsEmail, IsNotEmpty, IsEnum, IsString, IsEmpty } from 'class-validator';
+import { MatchPassword } from 'src/decorators/matchPassword.decorator';
+import { Account } from '../entities/accounts.entity';
+import { PickType } from '@nestjs/mapped-types';
+
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -15,23 +12,33 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
-
+  
   @IsNotEmpty()
   @IsString()
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/,
+    {
+      message:
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+    },
+  )
+  @MinLength(8)
+  @MaxLength(15)
   password: string;
 
   @IsNotEmpty()
-  @IsString()
-  phone: string;
+  @Validate(MatchPassword, ['password'])
+  passwordConfirmation: string;
 
-  @IsOptional()
-  @IsString()
-  country?: string;
+  @IsNotEmpty()
+  @MinLength(8)
+  phone: number;
 
-  @IsOptional()
-  @IsString()
-  city?: string;
-
+  
   @IsEmpty()
-  isAdmin?: boolean; // Cambiado a @IsOptional() y @IsBoolean()
+  accounts: Account;
 }
+
+
+export class LoginUserDto extends PickType(CreateUserDto,
+   ['email', 'password'] as const) {}
