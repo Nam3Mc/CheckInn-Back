@@ -1,6 +1,6 @@
 [
     {
-      "name": 101,
+      "name": "101",
       "description": "Descripción de la habitación 101",
       "beds": 1,
       "baths": 1,
@@ -9,7 +9,7 @@
       "price": 100
     },
     {
-      "name": 102,
+      "name": "102",
       "description": "Descripción de la habitación 102",
       "beds": 2,
       "baths": 1,
@@ -18,7 +18,7 @@
       "price": 120
     },
     {
-      "name": 103,
+      "name": "103",
       "description": "Descripción de la habitación 103",
       "beds": 1,
       "baths": 2,
@@ -27,7 +27,7 @@
       "price": 110
     },
     {
-      "name": 104,
+      "name": "104",
       "description": "Descripción de la habitación 104",
       "beds": 3,
       "baths": 1,
@@ -36,7 +36,7 @@
       "price": 150
     },
     {
-      "name": 105,
+      "name": "105",
       "description": "Descripción de la habitación 105",
       "beds": 2,
       "baths": 2,
@@ -45,7 +45,7 @@
       "price": 130
     },
     {
-      "name": 106,
+      "name": "106",
       "description": "Descripción de la habitación 106",
       "beds": 1,
       "baths": 1,
@@ -54,7 +54,7 @@
       "price": 100
     },
     {
-      "name": 107,
+      "name": "107",
       "description": "Descripción de la habitación 107",
       "beds": 2,
       "baths": 1,
@@ -63,7 +63,7 @@
       "price": 120
     },
     {
-      "name": 108,
+      "name": "108",
       "description": "Descripción de la habitación 108",
       "beds": 1,
       "baths": 2,
@@ -72,7 +72,7 @@
       "price": 110
     },
     {
-      "name": 109,
+      "name": "109",
       "description": "Descripción de la habitación 109",
       "beds": 3,
       "baths": 1,
@@ -81,7 +81,7 @@
       "price": 150
     },
     {
-      "name": 110,
+      "name": "110",
       "description": "Descripción de la habitación 110",
       "beds": 2,
       "baths": 2,
@@ -90,7 +90,7 @@
       "price": 130
     },
     {
-      "name": 111,
+      "name": "111",
       "description": "Descripción de la habitación 111",
       "beds": 1,
       "baths": 1,
@@ -99,7 +99,7 @@
       "price": 100
     },
     {
-      "name": 112,
+      "name": "112",
       "description": "Descripción de la habitación 112",
       "beds": 2,
       "baths": 1,
@@ -108,7 +108,7 @@
       "price": 120
     },
     {
-      "name": 113,
+      "name": "113",
       "description": "Descripción de la habitación 113",
       "beds": 1,
       "baths": 2,
@@ -117,7 +117,7 @@
       "price": 110
     },
     {
-      "name": 114,
+      "name": "114",
       "description": "Descripción de la habitación 114",
       "beds": 3,
       "baths": 1,
@@ -126,7 +126,7 @@
       "price": 150
     },
     {
-      "name": 115,
+      "name": "115",
       "description": "Descripción de la habitación 115",
       "beds": 2,
       "baths": 2,
@@ -135,7 +135,7 @@
       "price": 130
     },
     {
-      "name": 116,
+      "name": "116",
       "description": "Descripción de la habitación 116",
       "beds": 1,
       "baths": 1,
@@ -144,7 +144,7 @@
       "price": 100
     },
     {
-      "name": 117,
+      "name": "117",
       "description": "Descripción de la habitación 117",
       "beds": 2,
       "baths": 1,
@@ -153,7 +153,7 @@
       "price": 120
     },
     {
-      "name": 118,
+      "name": "118",
       "description": "Descripción de la habitación 118",
       "beds": 1,
       "baths": 2,
@@ -162,7 +162,7 @@
       "price": 110
     },
     {
-      "name": 119,
+      "name": "119",
       "description": "Descripción de la habitación 119",
       "beds": 3,
       "baths": 1,
@@ -171,7 +171,7 @@
       "price": 150
     },
     {
-      "name": 120,
+      "name": "120",
       "description": "Descripción de la habitación 120",
       "beds": 2,
       "baths": 2,

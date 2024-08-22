@@ -18,8 +18,8 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar' })
-  name: number;
+  @Column({ type: 'text' })
+  name: string;
 
   @Column({ type: 'text' })
   description: string;
