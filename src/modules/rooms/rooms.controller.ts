@@ -1,4 +1,10 @@
-import { BadRequestException, Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { RoomService } from './rooms.service';
 import { isUUID } from 'class-validator';
 
@@ -8,25 +14,23 @@ export class RoomsController {
 
   @Get('seeder')
   seedRooms() {
-    return this.roomService.seedRooms()
+    return this.roomService.seedRooms();
   }
 
   @Get()
-  getRooms(@Query("page") page: number, @Query("limit") limit: number) {
-
+  getRooms(@Query('page') page: number, @Query('limit') limit: number) {
     if (page && limit) {
-      return this.roomService.getRooms(page, limit)
-    }
-    else {
-      return this.roomService.getRooms(1, 3)
+      return this.roomService.getRooms(page, limit);
+    } else {
+      return this.roomService.getRooms(1, 3);
     }
   }
 
   @Get(':id')
-async getRoom(@Param('id') id: string) {
+  async getRoom(@Param('id') id: string) {
     if (!isUUID(id)) {
-        throw new BadRequestException('Invalid UUID');
+      throw new BadRequestException('Invalid UUID');
     }
     return this.roomService.getRoom(id);
-}
+  }
 }
