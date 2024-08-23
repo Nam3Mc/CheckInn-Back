@@ -6,18 +6,19 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from '../dto/users.dto';
-
 import { Query } from '@nestjs/common';
-import { User } from './user.repository';
+import { sensitiveInfoInterceptor } from './interceptors/sensitive-info/sensitive-info.interceptor';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseInterceptors(sensitiveInfoInterceptor)
   getUsersController(@Query('page') page: number, @Query('limit') limit: number) {
     if (page && limit) {
       return this.usersService.getUsersService(page, limit);
@@ -32,6 +33,7 @@ export class UsersController {
   }
 
   @Get(':email')
+  @UseInterceptors(sensitiveInfoInterceptor)
   findOne(@Param('email') email: string) {
     return this.usersService.getUsersByEmailService(email);
   }

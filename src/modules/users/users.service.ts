@@ -26,12 +26,11 @@ export class UsersService {
     return users.slice(start, end); 
     }
 
-    
-    async getUsersByEmailService(email: string, options?: { relations: string[] }): Promise<User | undefined> {
-      return this.userRepository.findOne({
+    async getUsersByEmailService(email: string,options?: { relations: string[] }): Promise<User | null> {
+      const user = await this.userRepository.findOne({ 
         where: { email },
-        ...options,
-      });
+      ...options });
+      return user || null;
     }
   
   
