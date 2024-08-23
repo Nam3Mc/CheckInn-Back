@@ -1,31 +1,31 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class RoomsDto {
-    @IsNotEmpty()
-    @IsNumber()
-    name: number;
+  @IsNotEmpty()
+  @IsNumber()
+  name: number;
 
-    @IsNotEmpty()
-    @IsString()
-    description: string;
-  
-    @IsNotEmpty()
-    @IsNumber()
-    beds: number;
-  
-    @IsNotEmpty()
-    @IsNumber()
-    baths: number;
-  
-    @IsNotEmpty()
-    @IsString()
-    photos: string;
-  
-    @IsNotEmpty()
-    @IsNumber()
-    capacity: number;
-  
-    @IsNotEmpty()
-    @IsNumber()
-    price: number;
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  beds: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  baths: number;
+
+  @IsNotEmpty()
+  @IsString()
+  photos: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  capacity: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
 }
