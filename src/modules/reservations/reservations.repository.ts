@@ -38,20 +38,27 @@ export class ReservationsRepository {
 
     const account = await this.accountsRepository.findOne(accountId);
     if (!account) {
-      throw new NotFoundException(`Cuenta con id: ${accountId} no encontrada.`);
+      throw new NotFoundException(`Account with id: ${accountId} not found.`);
+    }
+    if (guests <= 0) {
+      throw new NotFoundException(
+        `The number of guests must be greater than zero.`,
+      );
     }
 
     const room = await this.roomsRepository.findOne({
       where: { id: roomId },
     });
     if (!room) {
-      throw new NotFoundException(
-        `Habitación con id: ${roomId} no encontrada.`,
-      );
+      throw new NotFoundException(`Room with id: ${roomId} not found.`);
     }
     if (room.status !== 'available') {
+      throw new NotFoundException(`The room with id: ${roomId} is occupied.`);
+    }
+
+    if (room.capacity < guests) {
       throw new NotFoundException(
-        `La habitación con id: ${roomId} no está disponible.`,
+        `The room with id: ${roomId} does not have enough capacity for ${guests} guest(s). Maximum capacity: ${room.capacity}.`,
       );
     }
 
@@ -67,6 +74,9 @@ export class ReservationsRepository {
     reservation.status = true;
     reservation.room = room;
     reservation.guests = guests;
+
+    room.status = 'occupied';
+    await this.roomsRepository.save(room);
 
     const newReservation = await this.reservationsRepository.save(reservation);
 
