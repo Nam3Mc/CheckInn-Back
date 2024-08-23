@@ -5,6 +5,7 @@ import { User } from './users.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -18,7 +19,7 @@ export class Account {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 50, nullable: false })
+  @Column({ length: 50, nullable: false, default: 'default-photo-url.jpg' })
   photo: string;
 
   // Relación uno a muchos con la entidad Comment.
@@ -38,6 +39,9 @@ export class Account {
 
   // Relación uno a uno con la entidad Inbox.
   // Un Account tiene un solo Inbox y un Inbox pertenece a un solo Account.
-  @OneToOne(() => Inbox, (inbox) => inbox.account)
+  @OneToOne(() => Inbox, (inbox) => inbox.account, {
+    cascade: true,
+  })
+  @JoinColumn()
   inbox: Inbox;
 }

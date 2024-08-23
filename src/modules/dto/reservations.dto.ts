@@ -10,13 +10,13 @@ import { PartialType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 
 export class CreateReservationDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
-  price: number;
+  price?: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
-  status: boolean;
+  status?: boolean;
 
   @IsNotEmpty()
   @IsDate()
@@ -50,10 +50,10 @@ export class ReservationResponseDto {
   id: string;
 
   @IsNumber()
-  price: number;
+  price?: number;
 
   @IsBoolean()
-  status: boolean;
+  status?: boolean;
 
   @IsDate()
   checkin: Date;

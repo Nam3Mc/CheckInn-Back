@@ -1,8 +1,18 @@
-import { MaxLength, MinLength, Validate, Matches, IsEmail, IsNotEmpty, IsEnum, IsString, IsEmpty } from 'class-validator';
+import {
+  MaxLength,
+  MinLength,
+  Validate,
+  Matches,
+  IsEmail,
+  IsNotEmpty,
+  IsEnum,
+  IsString,
+  IsEmpty,
+  IsOptional,
+} from 'class-validator';
 import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 import { Account } from '../entities/accounts.entity';
 import { PickType } from '@nestjs/mapped-types';
-
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -12,7 +22,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
-  
+
   @IsNotEmpty()
   @IsString()
   @Matches(
@@ -34,11 +44,11 @@ export class CreateUserDto {
   @MinLength(8)
   phone: number;
 
-  
-  @IsEmpty()
-  accounts: Account;
+  @IsOptional()
+  accounts?: Account[];
 }
 
-
-export class LoginUserDto extends PickType(CreateUserDto,
-   ['email', 'password'] as const) {}
+export class LoginUserDto extends PickType(CreateUserDto, [
+  'email',
+  'password',
+] as const) {}

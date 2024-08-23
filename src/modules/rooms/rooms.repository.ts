@@ -13,7 +13,7 @@ export class RoomsRepository {
   async findOne(id: string): Promise<Room> {
     const room = await this.roomsRepository.findOne({ where: { id } });
     if (!room) {
-      throw new NotFoundException(`Account with ID ${id} not found`);
+      throw new NotFoundException(`Room with ID ${id} not found`);
     }
     return room;
   }

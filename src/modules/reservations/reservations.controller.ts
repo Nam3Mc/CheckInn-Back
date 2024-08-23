@@ -29,8 +29,13 @@ export class ReservationsController {
 
   @Post()
   addReservation(@Body() reservation: CreateReservationDto) {
-    const { accountId, roomId, nights } = reservation;
-    return this.reservationsService.addReservation(accountId, roomId, nights);
+    const { accountId, roomId, nights, guests } = reservation;
+    return this.reservationsService.addReservation(
+      accountId,
+      roomId,
+      nights,
+      guests,
+    );
   }
 
   @Put(':id')

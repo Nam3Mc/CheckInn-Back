@@ -15,11 +15,17 @@ export class ReservationsService {
     return this.reservationsRepository.findOne(id);
   }
 
-  addReservation(accountId: string, roomId: string, nights: number) {
+  addReservation(
+    accountId: string,
+    roomId: string,
+    nights: number,
+    guests: number,
+  ) {
     return this.reservationsRepository.addReservation(
       accountId,
       roomId,
       nights,
+      guests,
     );
   }
 

@@ -28,7 +28,12 @@ export class ReservationsRepository {
     }
     return reservation;
   }
-  async addReservation(accountId: string, roomId: string, nights: number) {
+  async addReservation(
+    accountId: string,
+    roomId: string,
+    nights: number,
+    guests: number,
+  ) {
     let total = 0;
 
     const account = await this.accountsRepository.findOne(accountId);
@@ -55,12 +60,13 @@ export class ReservationsRepository {
 
     const reservation = new Reservation();
     reservation.checkin = new Date();
-    reservation.checkout = null;
+    reservation.checkout = new Date();
+    reservation.checkout.setDate(reservation.checkout.getDate() + nights);
     reservation.price = total;
     reservation.account = account;
     reservation.status = true;
     reservation.room = room;
-    reservation.guests = 1;
+    reservation.guests = guests;
 
     const newReservation = await this.reservationsRepository.save(reservation);
 
