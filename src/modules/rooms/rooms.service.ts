@@ -40,4 +40,21 @@ export class RoomService {
 
     return 'Rooms seeded successfully';
   }
+
+  async getRooms(page: number, limit: number) {
+    let rooms = await this.roomRepository.find();
+    const start = (page - 1) * limit;
+    const end = start + limit;
+
+    rooms = rooms.slice(start, end);
+
+    return rooms;
+  }
+
+  async getRoom(id: string) {
+    let room = await this.roomRepository.findOne({
+      where: { id }
+    })
+    return room;
+  }
 }
