@@ -15,30 +15,31 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
-  
- 
+
   async signUpService(user: Partial<User>) {
     const { email, password } = user;
-  
+
     try {
-      const foundUser = await this.userService.getUsersByEmailService(email, { relations: ['accounts'] });
-  
+      const foundUser = await this.userService.getUsersByEmailService(email, {
+        relations: ['accounts'],
+      });
+
       if (foundUser) {
         throw new BadRequestException('User already registered');
       }
-  
+
       // Crea un nuevo usuario
       const newUser = await this.userService.addUserService({
         ...user,
         password,
       });
-  
+
       // Crea una nueva cuenta asociada al usuario
       const newAccount = this.accountsRepository.create({
         user: newUser,
       });
       const savedAccount = await this.accountsRepository.save(newAccount);
-  
+
       // Incluye el ID de la cuenta en el usuario retornado
       return {
         ...newUser,
@@ -52,37 +53,45 @@ export class AuthService {
       }
     }
   }
-  
 
-  async signInService(email: string, password: string, phone:number) {
+  async signInService(email: string, password: string, phone: number) {
+    if (!email) {
+      throw new BadRequestException('Email is required');
+    }
+    if (!password) {
+      throw new BadRequestException('Password is required');
+    }
+    if (phone === undefined) {
+      // phone puede ser 0, por eso comparo con undefined
+      throw new BadRequestException('Phone number is required');
+    }
+
     // Busca al usuario por email, incluyendo la relación con Account
     const foundUser = await this.userService.getUsersByEmailService(email, {
       relations: ['accounts'],
     });
-  
+
     if (!foundUser) {
-      throw new BadRequestException('User not found');
-    }
-  
-    // Comparación directa de las contraseñas
-    if (foundUser.password !== password) {
-      throw new BadRequestException('Invalid password');
+      throw new BadRequestException('Invalid credentials');
     }
 
-    if(foundUser.phone !== phone){
-      throw new BadRequestException('Invalid phone');
+    // Comparación directa de las contraseñas
+    if (foundUser.password !== password) {
+      throw new BadRequestException('Invalid credentials');
     }
-  
+
+    // if (foundUser.phone !== phone) {
+    //   throw new BadRequestException('Invalid credentials');
+    // }
+
     // Incluye el ID de la cuenta en la respuesta
     const accountId = foundUser.accounts?.[0]?.id; // Asumiendo que el usuario tiene al menos una cuenta
-  
+
     return {
       message: 'User logged in successfully',
       user: {
         ...foundUser,
-      
       },
     };
   }
-  
 }
