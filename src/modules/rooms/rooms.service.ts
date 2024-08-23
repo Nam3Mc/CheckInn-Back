@@ -9,7 +9,7 @@ import * as fs from 'fs';
 export class RoomService {
   constructor(
     @InjectRepository(Room)
-    private readonly roomRepository: Repository<Room>,
+    private readonly roomsRepository: Repository<Room>,
   ) {}
 
   async seedRooms() {
@@ -26,7 +26,7 @@ export class RoomService {
       room.capacity = roomData.capacity;
       room.price = roomData.price;
 
-      await this.roomRepository
+      await this.roomsRepository
         .createQueryBuilder()
         .insert()
         .into(Room)
@@ -42,7 +42,7 @@ export class RoomService {
   }
 
   async getRooms(page: number, limit: number) {
-    let rooms = await this.roomRepository.find();
+    let rooms = await this.roomsRepository.find();
     const start = (page - 1) * limit;
     const end = start + limit;
 
@@ -52,9 +52,9 @@ export class RoomService {
   }
 
   async getRoom(id: string) {
-    let room = await this.roomRepository.findOne({
-      where: { id }
-    })
+    const room = await this.roomsRepository.findOne({
+      where: { id },
+    });
     return room;
   }
 }

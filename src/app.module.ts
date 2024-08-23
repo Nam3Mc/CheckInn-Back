@@ -1,14 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { UsersModule } from './modules/users/users.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
-import { AuthModule } from './modules/auth/auth.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeorm from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { accountsModule } from './modules/accounts/accounts.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { RoomService } from './modules/rooms/rooms.service';
 
 @Module({
   imports: [
@@ -26,4 +27,12 @@ import { accountsModule } from './modules/accounts/accounts.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly roomService: RoomService) {}
+  async onModuleInit() {
+    await this.seedData();
+  }
+  private async seedData() {
+    await this.roomService.seedRooms();
+  }
+}

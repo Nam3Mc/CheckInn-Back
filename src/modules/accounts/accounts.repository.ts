@@ -11,13 +11,18 @@ export class AccountsRepository {
   ) {}
 
   async findOne(id: string): Promise<Account> {
-    const account = await this.accountsRepository.findOne({ where: { id } });
+    const account = await this.accountsRepository.findOne({
+      where: { id },
+      relations: ['user', 'reservation_', 'comments', 'inbox'],
+    });
     if (!account) {
       throw new NotFoundException(`Account with ID ${id} not found`);
     }
     return account;
   }
   async findAccounts(): Promise<Account[]> {
-    return this.accountsRepository.find();
+    return this.accountsRepository.find({
+      relations: ['user', 'reservation_', 'comments', 'inbox'],
+    });
   }
 }
