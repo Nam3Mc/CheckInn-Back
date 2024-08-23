@@ -10,7 +10,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 
 export class CreateReservationDto {
-  @IsOptional()
+  @IsOptional() //revisar
   @IsNumber()
   price?: number;
 

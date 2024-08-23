@@ -20,9 +20,19 @@ export class AccountsRepository {
     }
     return account;
   }
+
   async findAccounts(): Promise<Account[]> {
     return this.accountsRepository.find({
       relations: ['user', 'reservation_', 'comments', 'inbox'],
+      select: {
+        user: {
+          id: true,
+          email: true,
+          name: true,
+          phone: true,
+        },
+      },
     });
   }
+
 }

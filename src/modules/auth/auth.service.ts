@@ -15,33 +15,40 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
-
+  
   async signUpService(user: Partial<User>) {
     const { email, password } = user;
-
+  
     try {
-      const foundUser = await this.userService.getUsersByEmailService(email);
-
+      const foundUser = await this.userService.getUsersByEmailService(email, { relations: ['accounts'] });
+      
       if (foundUser) {
+        console.log('User already registered with email:', email);
         throw new BadRequestException('User already registered');
       }
+      
       const newUser = await this.userService.addUserService({
         ...user,
         password,
       });
-
+  
       const newAccount = this.accountsRepository.create({
         user: newUser,
       });
       await this.accountsRepository.save(newAccount);
-
+  
       return newUser;
     } catch (error) {
       console.error('Error during sign-up:', error.message);
-      throw error;
+      
+      if (error instanceof BadRequestException) {
+        throw error; // Relanzar la excepción personalizada
+      } else {
+        throw new BadRequestException('An unexpected error occurred'); // Manejo general de errores
+      }
     }
   }
-
+  
   async signInService(email: string, password: string) {
     // Busca al usuario por email, incluyendo la relación con Account
     const foundUser = await this.userService.getUsersByEmailService(email, {
@@ -57,12 +64,8 @@ export class AuthService {
       throw new BadRequestException('Invalid password');
     }
 
-    // Elimina las propiedades sensibles como password y roll antes de devolver el usuario
-    const { password: _, roll, ...userWithoutSensitiveInfo } = foundUser;
-
     return {
       message: 'User logged in successfully',
-      user: userWithoutSensitiveInfo,
     };
   }
 }
