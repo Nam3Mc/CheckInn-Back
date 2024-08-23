@@ -16,31 +16,35 @@ export class AuthService {
     private readonly usersRepository: Repository<User>,
   ) {}
   
+ 
   async signUpService(user: Partial<User>) {
     const { email, password } = user;
   
     try {
       const foundUser = await this.userService.getUsersByEmailService(email, { relations: ['accounts'] });
-      
+  
       if (foundUser) {
-        console.log('User already registered with email:', email);
         throw new BadRequestException('User already registered');
       }
-      
+  
+      // Crea un nuevo usuario
       const newUser = await this.userService.addUserService({
         ...user,
         password,
       });
   
+      // Crea una nueva cuenta asociada al usuario
       const newAccount = this.accountsRepository.create({
         user: newUser,
       });
-      await this.accountsRepository.save(newAccount);
+      const savedAccount = await this.accountsRepository.save(newAccount);
   
-      return newUser;
+      // Incluye el ID de la cuenta en el usuario retornado
+      return {
+        ...newUser,
+        accountId: savedAccount.id,
+      };
     } catch (error) {
-      console.error('Error during sign-up:', error.message);
-      
       if (error instanceof BadRequestException) {
         throw error; // Relanzar la excepción personalizada
       } else {
@@ -49,6 +53,7 @@ export class AuthService {
     }
   }
   
+
   async signInService(email: string, password: string) {
     // Busca al usuario por email, incluyendo la relación con Account
     const foundUser = await this.userService.getUsersByEmailService(email, {
