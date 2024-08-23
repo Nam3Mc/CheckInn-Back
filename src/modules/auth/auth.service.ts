@@ -54,7 +54,7 @@ export class AuthService {
   }
   
 
-  async signInService(email: string, password: string) {
+  async signInService(email: string, password: string, phone:number) {
     // Busca al usuario por email, incluyendo la relación con Account
     const foundUser = await this.userService.getUsersByEmailService(email, {
       relations: ['accounts'],
@@ -67,6 +67,10 @@ export class AuthService {
     // Comparación directa de las contraseñas
     if (foundUser.password !== password) {
       throw new BadRequestException('Invalid password');
+    }
+
+    if(foundUser.phone !== phone){
+      throw new BadRequestException('Invalid phone');
     }
   
     // Incluye el ID de la cuenta en la respuesta
