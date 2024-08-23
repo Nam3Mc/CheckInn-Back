@@ -59,18 +59,26 @@ export class AuthService {
     const foundUser = await this.userService.getUsersByEmailService(email, {
       relations: ['accounts'],
     });
-
+  
     if (!foundUser) {
       throw new BadRequestException('User not found');
     }
-
+  
     // Comparación directa de las contraseñas
     if (foundUser.password !== password) {
       throw new BadRequestException('Invalid password');
     }
-
+  
+    // Incluye el ID de la cuenta en la respuesta
+    const accountId = foundUser.accounts?.[0]?.id; // Asumiendo que el usuario tiene al menos una cuenta
+  
     return {
       message: 'User logged in successfully',
+      user: {
+        ...foundUser,
+      
+      },
     };
   }
+  
 }
