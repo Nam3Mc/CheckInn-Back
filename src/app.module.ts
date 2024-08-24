@@ -1,18 +1,39 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
+import { UsersModule } from './modules/users/users.module';
+import { RoomsModule } from './modules/rooms/rooms.module';
+import { ReservationsModule } from './modules/reservations/reservations.module';
 import { AppService } from './app.service';
-import { UsersModule } from './src/users/users/users.module';
-import { AccountsModule } from './accounts/accounts.module';
-import { CommentsModule } from './comments/comments.module';
-import { ReservationsModule } from './reservations/reservations.module';
-import { RoomsModule } from './rooms/rooms.module';
-import { InboxModule } from './inbox/inbox.module';
-import { AmenitiesModule } from './amenities/amenities.module';
-import { InboxModule } from './inbox/inbox.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import typeorm from './config/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { accountsModule } from './modules/accounts/accounts.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { RoomService } from './modules/rooms/rooms.service';
 
 @Module({
-  imports: [UsersModule, AccountsModule, CommentsModule, ReservationsModule, RoomsModule, InboxModule, AmenitiesModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, load: [typeorm] }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => config.get('typeorm'),
+    }),
+    UsersModule,
+    RoomsModule,
+    AuthModule,
+    ReservationsModule,
+    accountsModule,
+  ],
+>>>>>>> main
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly roomService: RoomService) {}
+  async onModuleInit() {
+    await this.seedData();
+  }
+  private async seedData() {
+    await this.roomService.seedRooms();
+  }
+}
