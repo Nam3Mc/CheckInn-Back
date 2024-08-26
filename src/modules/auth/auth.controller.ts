@@ -10,7 +10,6 @@ export class AuthController {
   @Post('/signUp')
   @UseInterceptors(sensitiveInfoInterceptor)
   signUpController(@Body() user: CreateUserDto) {
-
     return this.authService.signUpService(user);
   }
 
