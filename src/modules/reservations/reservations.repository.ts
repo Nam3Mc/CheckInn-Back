@@ -26,7 +26,9 @@ export class ReservationsRepository {
   }
 
   async findOne(id: string) {
-    const reservation = this.reservationsRepository.findOne({ where: { id } });
+    const reservation = await this.reservationsRepository.findOne({
+      where: { id },
+    });
     if (!reservation) {
       throw new NotFoundException(`Reservation with ID ${id} not found`);
     }
@@ -120,6 +122,25 @@ export class ReservationsRepository {
 
   async remove(id: string) {
     const reservation = await this.reservationsRepository.findOneBy({ id });
+    if (!reservation) {
+      throw new NotFoundException(`Reservation with ID ${id} not found`);
+    }
+    const room = reservation.room;
+    if (room) {
+      room.status = 'available';
+      await this.roomsRepository.save(room);
+    }
     this.reservationsRepository.remove(reservation);
+
+    return {
+      message: 'Reservation successfully canceled.',
+      reservation: {
+        id: reservation.id,
+        checkin: reservation.checkin,
+        checkout: reservation.checkout,
+        guests: reservation.guests,
+        hasMinor: reservation.hasMinor,
+      },
+    };
   }
 }
