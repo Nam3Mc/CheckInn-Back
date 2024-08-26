@@ -1,8 +1,11 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, UseGuards } from "@nestjs/common";
 import { UsersRepository } from "./user.repo";
 import { AccountsRepository } from "./account.repo";
 import { RoomsRepository } from "./rooms.repo";
 import { ReservationsRepository } from "./reservations.repo";
+import { Rolls } from "src/decorators/rolls.decorator";
+import { Roll } from "src/modules/entities/users.entity";
+import { RollsGuard } from "src/guards/rolls.guard";
 
 @Controller("test")
 export class TestControler {
@@ -13,7 +16,9 @@ export class TestControler {
         private readonly reservationRepo: ReservationsRepository 
     ){}
 
-    @Get()
+    @Get("users")
+    @Rolls(Roll.ADMIN)
+    @UseGuards(RollsGuard)
     getUsers() {
         return this.userRepo.getUsers()
     }
