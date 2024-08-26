@@ -1,13 +1,11 @@
 import {
   IsBoolean,
-  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
-import { Type } from 'class-transformer';
 
 export class CreateReservationDto {
   @IsOptional() //revisar
@@ -19,14 +17,12 @@ export class CreateReservationDto {
   status?: boolean;
 
   @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
-  checkin: Date;
+  @IsString()
+  checkinDate: string;
 
   @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
-  checkout: Date;
+  @IsString()
+  checkoutDate: string;
 
   @IsNotEmpty()
   @IsString()
@@ -36,13 +32,13 @@ export class CreateReservationDto {
   @IsString()
   roomId: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  nights: number;
-
   @IsOptional()
   @IsNumber()
   guests?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  hasMinor?: boolean;
 }
 
 export class ReservationResponseDto {
@@ -55,11 +51,11 @@ export class ReservationResponseDto {
   @IsBoolean()
   status?: boolean;
 
-  @IsDate()
-  checkin: Date;
+  @IsString()
+  checkin: string;
 
-  @IsDate()
-  checkout: Date;
+  @IsString()
+  checkout: string;
 
   @IsString()
   accountId: string;
