@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { accountsModule } from './modules/accounts/accounts.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoomService } from './modules/rooms/rooms.service';
+import { TestModule } from './sources/general.module';
 
 @Module({
   imports: [
@@ -23,6 +24,8 @@ import { RoomService } from './modules/rooms/rooms.service';
     AuthModule,
     ReservationsModule,
     accountsModule,
+    TestModule
+
   ],
   controllers: [AppController],
   providers: [AppService],
