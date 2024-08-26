@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from '../entities/reservations.entity';
@@ -31,8 +35,10 @@ export class ReservationsRepository {
   async addReservation(
     accountId: string,
     roomId: string,
-    nights: number,
+    checkinDate: string,
+    checkoutDate: string,
     guests: number,
+    hasMinor: boolean,
   ) {
     let total = 0;
 
@@ -62,18 +68,31 @@ export class ReservationsRepository {
       );
     }
 
+    const checkin = new Date(checkinDate);
+    const checkout = new Date(checkoutDate);
+    const nights = Math.ceil(
+      (checkout.getTime() - checkin.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    if (nights <= 0) {
+      throw new BadRequestException(
+        `The checkout date must be after the checkin date.`,
+      );
+    }
+
     const roomTotal = Number(room.price) * nights;
     total = roomTotal;
 
     const reservation = new Reservation();
-    reservation.checkin = new Date();
-    reservation.checkout = new Date();
+    reservation.checkin = checkin;
+    reservation.checkout = checkout;
     reservation.checkout.setDate(reservation.checkout.getDate() + nights);
     reservation.price = total;
     reservation.account = account;
     reservation.status = true;
     reservation.room = room;
     reservation.guests = guests;
+    reservation.hasMinor = hasMinor;
 
     room.status = 'occupied';
     await this.roomsRepository.save(room);
