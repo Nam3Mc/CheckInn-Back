@@ -35,7 +35,7 @@ export class ReservationsService {
     return this.reservationsRepository.update(id, updateReservationDto);
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     return this.reservationsRepository.remove(id);
   }
 }
