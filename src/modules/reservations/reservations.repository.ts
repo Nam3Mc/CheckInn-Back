@@ -35,8 +35,8 @@ export class ReservationsRepository {
   async addReservation(
     accountId: string,
     roomId: string,
-    checkinDate: string,
-    checkoutDate: string,
+    checkinDate: Date,
+    checkoutDate: Date,
     guests: number,
     hasMinor: boolean,
   ) {
