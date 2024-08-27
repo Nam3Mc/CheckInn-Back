@@ -13,4 +13,9 @@ export class AccountsService {
   async getAccountById(id: string): Promise<Account | null> {
     return this.accountsRepository.findOne(id);
   }
+
+  addPicture(file: Express.Multer.File) {
+    return this.accountsRepository.savePicture(file)
+  }
+
 }
