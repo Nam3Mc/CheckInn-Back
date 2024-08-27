@@ -13,7 +13,7 @@ export class RoomsRepository {
   constructor(
     @InjectRepository(Room)
     private readonly roomsRepository: Repository<Room>,
-    // private readonly cloudinaryService: CloudinaryService
+    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async findOne(id: string): Promise<Room> {
@@ -24,10 +24,10 @@ export class RoomsRepository {
     return room;
   }
 
-  // async savePictures(file: Express.Multer.File): Promise<string> {
-    // const photo = (await this.cloudinaryService.uploadImage(file)).url
-    // return photo
-  // }
+  async savePictures(file: Express.Multer.File): Promise<string> {
+    const photo = (await this.cloudinaryService.uploadImage(file)).url
+    return photo
+  }
 
   async newRoom(roomData: RoomsDto): Promise<Room> {
     const room = new Room
