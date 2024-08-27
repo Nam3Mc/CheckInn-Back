@@ -7,7 +7,9 @@ import {
 } from '@nestjs/common';
 import { RoomService } from './rooms.service';
 import { isUUID } from 'class-validator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('ROOMS')
 @Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomService: RoomService) {}
