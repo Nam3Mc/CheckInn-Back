@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Reservation } from '../entities/reservations.entity';
 import { Room } from '../entities/rooms.entity';
 import { Account } from '../entities/accounts.entity';
+import { CloudinaryConfig } from 'src/config/cloudinary';
+import { CloudinaryService } from '../commons/cloudinary.service';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { Account } from '../entities/accounts.entity';
     ReservationsRepository,
     AccountsRepository,
     RoomsRepository,
+    CloudinaryConfig,
+    CloudinaryService
   ],
 })
 export class ReservationsModule {}

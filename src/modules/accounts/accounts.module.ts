@@ -13,8 +13,8 @@ import { CloudinaryService } from '../commons/cloudinary.service';
   providers: [ 
     AccountsService, 
     AccountsRepository, 
-    // CloudinaryConfig,
-    // CloudinaryService
+    CloudinaryConfig,
+    CloudinaryService
   ],
   exports: [AccountsRepository],
 })

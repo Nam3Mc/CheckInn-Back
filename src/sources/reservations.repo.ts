@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Reservation } from "src/modules/entities/reservations.entity";
 import { Repository } from "typeorm";
@@ -34,22 +34,24 @@ export class ReservationsRepository{
         const room = await this.roomsRepository.getRoomById(roomId)
         const account = await this.accountRepository.getAccountById(accountId)
         const total = nights * room.price
+        const isReserved = await this.roomsRepository.roomCalendar(roomId, checkIn, checkOut)
 
-        const reservation = new Reservation
-        reservation.checkin = checkIn
-        reservation.checkout = checkOut
-        reservation.room = room
-        reservation.account = account
-        reservation.price = total
-        reservation.guests = guests
-        
-        const createdReservation = await this.reservationsRepository.save(reservation)
-        return createdReservation 
+        if ( isReserved ) {
+            throw new BadRequestException("This dates are not available")
+        } else {
+
+            const reservation = new Reservation
+            reservation.checkin = checkIn
+            reservation.checkout = checkOut
+            reservation.room = room
+            reservation.account = account
+            reservation.price = total
+            reservation.guests = guests
+            
+            const createdReservation = await this.reservationsRepository.save(reservation)
+            return createdReservation 
+        }
     }
 
-    async calendarAvailability(id: string): Promise<Reservation[]> {
-        const calendar: Reservation[] = (await this.roomsRepository.getRoomById(id)).reservation
-        return calendar
-    }   
 }
  
