@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from '../entities/reservations.entity';
@@ -22,7 +26,9 @@ export class ReservationsRepository {
   }
 
   async findOne(id: string) {
-    const reservation = this.reservationsRepository.findOne({ where: { id } });
+    const reservation = await this.reservationsRepository.findOne({
+      where: { id },
+    });
     if (!reservation) {
       throw new NotFoundException(`Reservation with ID ${id} not found`);
     }
@@ -31,8 +37,10 @@ export class ReservationsRepository {
   async addReservation(
     accountId: string,
     roomId: string,
-    nights: number,
+    checkinDate: Date,
+    checkoutDate: Date,
     guests: number,
+    hasMinor: boolean,
   ) {
     let total = 0;
 
@@ -62,18 +70,31 @@ export class ReservationsRepository {
       );
     }
 
+    const checkin = new Date(checkinDate);
+    const checkout = new Date(checkoutDate);
+    const nights = Math.ceil(
+      (checkout.getTime() - checkin.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    if (nights <= 0) {
+      throw new BadRequestException(
+        `The checkout date must be after the checkin date.`,
+      );
+    }
+
     const roomTotal = Number(room.price) * nights;
     total = roomTotal;
 
     const reservation = new Reservation();
-    reservation.checkin = new Date();
-    reservation.checkout = new Date();
+    reservation.checkin = checkin;
+    reservation.checkout = checkout;
     reservation.checkout.setDate(reservation.checkout.getDate() + nights);
     reservation.price = total;
     reservation.account = account;
     reservation.status = true;
     reservation.room = room;
     reservation.guests = guests;
+    reservation.hasMinor = hasMinor;
 
     room.status = 'occupied';
     await this.roomsRepository.save(room);
@@ -101,6 +122,25 @@ export class ReservationsRepository {
 
   async remove(id: string) {
     const reservation = await this.reservationsRepository.findOneBy({ id });
+    if (!reservation) {
+      throw new NotFoundException(`Reservation with ID ${id} not found`);
+    }
+    const room = reservation.room;
+    if (room) {
+      room.status = 'available';
+      await this.roomsRepository.save(room);
+    }
     this.reservationsRepository.remove(reservation);
+
+    return {
+      message: 'Reservation successfully canceled.',
+      reservation: {
+        id: reservation.id,
+        checkin: reservation.checkin,
+        checkout: reservation.checkout,
+        guests: reservation.guests,
+        hasMinor: reservation.hasMinor,
+      },
+    };
   }
 }

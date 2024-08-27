@@ -5,11 +5,14 @@ import { BadRequestException } from '@nestjs/common';
 import { Account } from '../entities/accounts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
+    private readonly jwtService: JwtService,
     @InjectRepository(Account)
     private readonly accountsRepository: Repository<Account>,
     @InjectRepository(User)
@@ -28,10 +31,12 @@ export class AuthService {
         throw new BadRequestException('User already registered');
       }
 
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       // Crea un nuevo usuario
       const newUser = await this.userService.addUserService({
         ...user,
-        password,
+        password: hashedPassword,
       });
 
       // Crea una nueva cuenta asociada al usuario
@@ -75,8 +80,8 @@ export class AuthService {
       throw new BadRequestException('Invalid credentials');
     }
 
-    // Comparación directa de las contraseñas
-    if (foundUser.password !== password) {
+    const validPassword = await bcrypt.compare(password, foundUser.password);
+    if (!validPassword) {
       throw new BadRequestException('Invalid credentials');
     }
 
@@ -87,11 +92,19 @@ export class AuthService {
     // Incluye el ID de la cuenta en la respuesta
     const accountId = foundUser.accounts?.[0]?.id; // Asumiendo que el usuario tiene al menos una cuenta
 
+    const payLoad = {
+      id: foundUser.id,
+      email: foundUser.email,
+      phone: foundUser.phone,
+    };
+    const token = this.jwtService.sign(payLoad);
+
     return {
       message: 'User logged in successfully',
       user: {
         ...foundUser,
       },
+      token,
     };
   }
 }

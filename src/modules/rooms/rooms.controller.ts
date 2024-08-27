@@ -15,7 +15,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Rolls } from 'src/decorators/rolls.decorator';
 import { Roll } from '../entities/users.entity';
 import { RollsGuard } from 'src/guards/rolls.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('ROOMS')
 @Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomService: RoomService) {}
