@@ -6,8 +6,9 @@ import { Rolls } from 'src/decorators/rolls.decorator';
 import { Roll } from '../entities/users.entity';
 import { RollsGuard } from 'src/guards/rolls.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('ACCOUNTS')
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
@@ -35,6 +36,4 @@ export class AccountsController {
   addProfilePicture(@UploadedFiles() file: Express.Multer.File ) {
     return this.accountsService.addPicture(file)
   }
-
-
 }

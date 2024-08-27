@@ -11,6 +11,7 @@ import { accountsModule } from './modules/accounts/accounts.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoomService } from './modules/rooms/rooms.service';
 import { TestModule } from './sources/general.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -24,8 +25,12 @@ import { TestModule } from './sources/general.module';
     AuthModule,
     ReservationsModule,
     accountsModule,
-    TestModule
-
+    TestModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

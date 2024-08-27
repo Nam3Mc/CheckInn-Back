@@ -17,6 +17,7 @@ const config = {
   synchronize: true,
   dropSchema: false,
 };
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 
 export default registerAs('typeorm', () => config);
 

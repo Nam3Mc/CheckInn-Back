@@ -21,12 +21,12 @@ export class CreateReservationDto {
   @IsNotEmpty()
   @IsDate()
   @Type(() => Date)
-  checkin: Date;
+  checkinDate: Date;
 
   @IsNotEmpty()
   @IsDate()
   @Type(() => Date)
-  checkout: Date;
+  checkoutDate: Date;
 
   @IsNotEmpty()
   @IsString()
@@ -36,13 +36,13 @@ export class CreateReservationDto {
   @IsString()
   roomId: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  nights: number;
-
   @IsOptional()
   @IsNumber()
   guests?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  hasMinor?: boolean;
 }
 
 export class ReservationResponseDto {
@@ -55,11 +55,11 @@ export class ReservationResponseDto {
   @IsBoolean()
   status?: boolean;
 
-  @IsDate()
-  checkin: Date;
+  @IsString()
+  checkin: string;
 
-  @IsDate()
-  checkout: Date;
+  @IsString()
+  checkout: string;
 
   @IsString()
   accountId: string;

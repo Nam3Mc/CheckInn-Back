@@ -16,7 +16,9 @@ import {
 import { Rolls } from 'src/decorators/rolls.decorator';
 import { Roll } from '../entities/users.entity';
 import { RollsGuard } from 'src/guards/rolls.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('RESERVATIONS')
 @Controller('reservations')
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
@@ -37,13 +39,7 @@ export class ReservationsController {
   @Rolls(Roll.ADMIN || Roll.USER)
   @UseGuards(RollsGuard)
   addReservation(@Body() reservation: CreateReservationDto) {
-    const { accountId, roomId, nights, guests } = reservation;
-    return this.reservationsService.addReservation(
-      accountId,
-      roomId,
-      nights,
-      guests,
-    );
+    return this.reservationsService.addReservation(reservation);
   }
 
   @Put(':id')

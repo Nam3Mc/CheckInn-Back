@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ReservationsRepository } from './reservations.repository';
-import { UpdateReservationDto } from '../dto/reservations.dto';
+import {
+  CreateReservationDto,
+  UpdateReservationDto,
+} from '../dto/reservations.dto';
 @Injectable()
 export class ReservationsService {
   constructor(
@@ -15,17 +18,16 @@ export class ReservationsService {
     return this.reservationsRepository.findOne(id);
   }
 
-  addReservation(
-    accountId: string,
-    roomId: string,
-    nights: number,
-    guests: number,
-  ) {
+  addReservation(createReservationDto: CreateReservationDto) {
+    const { accountId, roomId, checkinDate, checkoutDate, guests, hasMinor } =
+      createReservationDto;
     return this.reservationsRepository.addReservation(
       accountId,
       roomId,
-      nights,
+      checkinDate,
+      checkoutDate,
       guests,
+      hasMinor,
     );
   }
 
@@ -33,7 +35,7 @@ export class ReservationsService {
     return this.reservationsRepository.update(id, updateReservationDto);
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     return this.reservationsRepository.remove(id);
   }
 }

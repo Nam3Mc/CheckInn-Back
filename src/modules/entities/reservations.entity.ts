@@ -29,4 +29,7 @@ export class Reservation {
 
   @Column({ type: 'int', default: 1 })
   guests: number;
+
+  @Column({ type: 'boolean', default: false })
+  hasMinor: boolean;
 }
