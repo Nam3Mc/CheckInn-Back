@@ -10,7 +10,7 @@ import { CloudinaryService } from '../commons/cloudinary.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Account])],
   controllers: [AccountsController],
-  providers: [
+  providers: [ 
     AccountsService, 
     AccountsRepository, 
     CloudinaryConfig,

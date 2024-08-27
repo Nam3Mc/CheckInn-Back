@@ -36,6 +36,4 @@ export class AccountsController {
   addProfilePicture(@UploadedFiles() file: Express.Multer.File ) {
     return this.accountsService.addPicture(file)
   }
-
-
 }
