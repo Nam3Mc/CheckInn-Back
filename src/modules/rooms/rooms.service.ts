@@ -62,7 +62,7 @@ export class RoomService {
   }
 
   addPhotos(file: Express.Multer.File) {
-    return this.roomsRepo.savePictures(file)
+    // return this.roomsRepo.savePictures(file)
   }
 
 }

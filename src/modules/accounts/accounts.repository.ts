@@ -10,7 +10,7 @@ export class AccountsRepository {
   constructor(
     @InjectRepository(Account)
     private readonly accountsRepository: Repository<Account>,
-    private readonly cloudinaryService: CloudinaryService
+    // private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async findOne(id: string): Promise<Account> {
@@ -39,8 +39,9 @@ export class AccountsRepository {
   }
 
   async savePicture(file: Express.Multer.File): Promise<string> {
-    const image = (await this.cloudinaryService.uploadImage(file)).url
-    return image
+    // const image = (await this.cloudinaryService.uploadImage(file)).url
+    // return image
+    return "done"
   }
 
 }
