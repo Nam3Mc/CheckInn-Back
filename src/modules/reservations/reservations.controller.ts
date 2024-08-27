@@ -12,7 +12,9 @@ import {
   CreateReservationDto,
   UpdateReservationDto,
 } from '../dto/reservations.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('RESERVATIONS')
 @Controller('reservations')
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}

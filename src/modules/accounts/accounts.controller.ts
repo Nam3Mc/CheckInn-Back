@@ -2,8 +2,9 @@ import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { Account } from '../entities/accounts.entity';
 import { sensitiveInfoInterceptor } from '../users/interceptors/sensitive-info/sensitive-info.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('ACCOUNTS')
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
