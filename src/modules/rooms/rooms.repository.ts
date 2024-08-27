@@ -3,6 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../entities/rooms.entity';
 import { CloudinaryService } from '../commons/cloudinary.service';
+import { RoomsDto } from '../dto/rooms.dto';
+import { Reservation } from '../entities/reservations.entity';
+import { ReservationDto } from 'src/sources/reservation.dto';
 
 @Injectable()
 export class RoomsRepository {
@@ -25,5 +28,20 @@ export class RoomsRepository {
     const photo = (await this.cloudinaryService.uploadImage(file)).url
     return photo
   }
+  async newRoom(roomData: RoomsDto): Promise<Room> {
+    const room = new Room
+    return room
+  }
 
+  async roomCalendar(roomId: string ): Promise<Reservation[]> {
+    const room: Room = await this.roomsRepository.findOne({
+      where: {id: roomId}
+    })
+    const Reservation: Reservation[] = room.reservation
+    return Reservation
+  }
+
+  async newReservation(reservationData: ReservationDto) {
+    return "In creation"
+  }
 }
