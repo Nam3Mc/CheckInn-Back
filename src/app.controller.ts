@@ -13,7 +13,7 @@ export class AppController {
       res.json({ id: response.id });
     } catch (error) {
       console.error(error);
-      res.status(500).send('Error al crear la preferencia');
+      res.status(500).send('Could not create the preference');
     }
   }
 }
