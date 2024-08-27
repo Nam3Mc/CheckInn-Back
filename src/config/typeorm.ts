@@ -1,20 +1,15 @@
 import { registerAs } from '@nestjs/config';
 import { config as dotenvConfig } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
-dotenvConfig({ path: '.env.development' });
+dotenvConfig({ path: '.development.env' });
 
 const config = {
   type: 'postgres',
-  database: "checkinn",
-  // process.env.DB_NAME,
-  host: "localhost",
-  // process.env.DB_HOST,
-  port: 5432,
-  // process.env.DB_PORT as unknown as number,
-  username: "postgres",
-  // process.env.DB_USERNAME,
-  // password: process.env.DB_PASSWORD,
-  password: "2Years*end2022",
+  database: process.env.DB_NAME,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT as unknown as number,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   autoLoadEntities: true,
@@ -22,6 +17,7 @@ const config = {
   synchronize: true,
   dropSchema: false,
 };
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 
 export default registerAs('typeorm', () => config);
 
