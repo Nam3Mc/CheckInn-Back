@@ -12,6 +12,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RoomService } from './modules/rooms/rooms.service';
 import { TestModule } from './sources/general.module';
 import { JwtModule } from '@nestjs/jwt';
+import { inboxModule } from './modules/inbox/inbox.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JwtModule } from '@nestjs/jwt';
     ReservationsModule,
     accountsModule,
     TestModule,
+    inboxModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
