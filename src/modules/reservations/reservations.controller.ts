@@ -6,12 +6,16 @@ import {
   Post,
   Body,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import {
   CreateReservationDto,
   UpdateReservationDto,
 } from '../dto/reservations.dto';
+import { Rolls } from 'src/decorators/rolls.decorator';
+import { Roll } from '../entities/users.entity';
+import { RollsGuard } from 'src/guards/rolls.guard';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('RESERVATIONS')
@@ -20,6 +24,8 @@ export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
   @Get()
+  @Rolls(Roll.ADMIN)
+  @UseGuards(RollsGuard)
   findAll() {
     return this.reservationsService.findAll();
   }
@@ -30,11 +36,15 @@ export class ReservationsController {
   }
 
   @Post()
+  @Rolls(Roll.ADMIN || Roll.USER)
+  @UseGuards(RollsGuard)
   addReservation(@Body() reservation: CreateReservationDto) {
     return this.reservationsService.addReservation(reservation);
   }
 
   @Put(':id')
+  @Rolls(Roll.ADMIN || Roll.USER)
+  @UseGuards(RollsGuard)
   update(
     @Param('id') id: string,
     @Body() updateReservationDto: UpdateReservationDto,
@@ -43,6 +53,8 @@ export class ReservationsController {
   }
 
   @Delete(':id')
+  @Rolls(Roll.ADMIN || Roll.USER)
+  @UseGuards(RollsGuard)
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);
   }

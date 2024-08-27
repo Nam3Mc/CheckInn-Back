@@ -3,10 +3,18 @@ import {
   Controller,
   Get,
   Param,
+  Post,
   Query,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RoomService } from './rooms.service';
 import { isUUID } from 'class-validator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Rolls } from 'src/decorators/rolls.decorator';
+import { Roll } from '../entities/users.entity';
+import { RollsGuard } from 'src/guards/rolls.guard';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('ROOMS')
@@ -35,4 +43,13 @@ export class RoomsController {
     }
     return this.roomService.getRoom(id);
   }
+
+  @Post("photos")
+  @Rolls(Roll.ADMIN)
+  @UseGuards(RollsGuard)
+  @UseInterceptors(FileInterceptor("picture"))
+  addRoomPhoto(@UploadedFile() file: Express.Multer.File ) {
+    return this.roomService.addPhotos(file)
+  }
+
 }

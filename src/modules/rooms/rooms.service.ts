@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { Room } from '../entities/rooms.entity';
 import * as path from 'path';
 import * as fs from 'fs';
+import { RoomsRepository } from './rooms.repository';
 
 @Injectable()
 export class RoomService {
+
   constructor(
     @InjectRepository(Room)
     private readonly roomsRepository: Repository<Room>,
+    private readonly roomsRepo: RoomsRepository
   ) {}
 
   async seedRooms() {
@@ -57,4 +60,9 @@ export class RoomService {
     });
     return room;
   }
+
+  addPhotos(file: Express.Multer.File) {
+    return this.roomsRepo.savePictures(file)
+  }
+
 }

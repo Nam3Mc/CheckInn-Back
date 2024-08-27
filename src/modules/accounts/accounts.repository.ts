@@ -2,12 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from '../entities/accounts.entity';
 import { Repository } from 'typeorm';
+import { CloudinaryService } from '../commons/cloudinary.service';
 
 @Injectable()
 export class AccountsRepository {
+
   constructor(
     @InjectRepository(Account)
     private readonly accountsRepository: Repository<Account>,
+    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async findOne(id: string): Promise<Account> {
@@ -33,6 +36,11 @@ export class AccountsRepository {
         },
       },
     });
+  }
+
+  async savePicture(file: Express.Multer.File): Promise<string> {
+    const image = (await this.cloudinaryService.uploadImage(file)).url
+    return image
   }
 
 }
