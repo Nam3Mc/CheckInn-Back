@@ -1,13 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-
+import { AccountsRepository } from '../accounts/accounts.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/users.entity';
 import { Repository } from 'typeorm';
+import { Account } from '../entities/accounts.entity';
+import { privateDecrypt } from 'crypto';
 
 @Injectable()
 export class UsersService {
   constructor(
-  @InjectRepository(User) private userRepository:Repository<User>
+  @InjectRepository(User) private userRepository:Repository<User>,
+  @InjectRepository(Account) private accountRepository:Repository<Account>
   ) {}
 
 
@@ -38,8 +41,21 @@ export class UsersService {
   //   return `This action updates a #${id} user`;
   // }
 
+
+
   async deleteUserService(id: string): Promise<{ message: string }> {
-    const result = await this.userRepository.delete(id);
-    return result ? { message: 'User Deleted' } : { message: 'User not found' };
+    // Verifica si existen cuentas relacionadas antes de eliminar
+    const accounts = await this.accountRepository.find({ where: { user: { id } } });
+    if (accounts.length > 0) {
+      // Elimina las cuentas relacionadas
+      await this.accountRepository.remove(accounts);
+    }else{
+      return { message: 'User not found' }
+    }
+
+    // Luego elimina el usuario
+    await this.userRepository.delete(id);
+
+    return { message: 'User deleted successfully' };
   }
 }
