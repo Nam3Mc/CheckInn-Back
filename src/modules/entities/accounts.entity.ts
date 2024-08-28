@@ -44,4 +44,14 @@ export class Account {
   })
   @JoinColumn()
   inbox: Inbox;
+
+  // Relación uno a muchos para los mensajes enviados.
+  // Un Account puede enviar múltiples mensajes.
+  @OneToMany(() => Inbox, (inbox) => inbox.sender)
+  sentMessages: Inbox[];
+
+  // Relación uno a muchos para los mensajes recibidos.
+  // Un Account puede recibir múltiples mensajes.
+  @OneToMany(() => Inbox, (inbox) => inbox.receiver)
+  receivedMessages: Inbox[];
 }

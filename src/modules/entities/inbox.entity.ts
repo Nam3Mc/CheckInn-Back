@@ -1,4 +1,6 @@
 import {
+  Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -13,12 +15,24 @@ export class Inbox {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-
   @OneToOne(() => Account, (account) => account.inbox)
   @JoinColumn()
   account: Account;
 
-
   @ManyToOne(() => Comment, (comment) => comment.inbox)
   comment: Comment[];
+
+  @Column({ type: 'text' })
+  message: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @ManyToOne(() => Account, (account) => account.sentMessages)
+  @JoinColumn({ name: 'senderId' })
+  sender: Account;
+
+  @ManyToOne(() => Account, (account) => account.receivedMessages)
+  @JoinColumn({ name: 'receiverId' })
+  receiver: Account;
 }
