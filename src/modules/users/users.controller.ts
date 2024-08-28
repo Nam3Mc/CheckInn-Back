@@ -1,4 +1,4 @@
-import {
+import {UseGuards,
   Controller,
   Get,
   Post,
@@ -13,6 +13,7 @@ import { CreateUserDto } from '../dto/users.dto';
 import { Query } from '@nestjs/common';
 import { sensitiveInfoInterceptor } from './interceptors/sensitive-info/sensitive-info.interceptor';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtGuard } from '../auth/jwt/jwt.guard';
 
 @ApiTags('USERS')
 @Controller('users')
@@ -20,6 +21,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+   @UseGuards(JwtGuard)
   @UseInterceptors(sensitiveInfoInterceptor)
   getUsersController(@Query('page') page: number, @Query('limit') limit: number) {
     if (page && limit) {
@@ -35,6 +37,7 @@ export class UsersController {
   }
 
   @Get(':email')
+  @UseGuards(JwtGuard)
   @UseInterceptors(sensitiveInfoInterceptor)
   findOne(@Param('email') email: string) {
     return this.usersService.getUsersByEmailService(email);
