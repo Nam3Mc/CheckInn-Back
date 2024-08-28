@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { EmailService } from '../commons/nodemailer.service';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     private readonly accountsRepository: Repository<Account>,
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    private readonly emailService: EmailService,
   ) {}
 
   async signUpService(user: Partial<User>) {
@@ -44,6 +46,12 @@ export class AuthService {
         user: newUser,
       });
       const savedAccount = await this.accountsRepository.save(newAccount);
+
+      await this.emailService.sendRegistrationEmail(
+        newUser.email,
+        'Bienvenido a nuestra aplicación',
+        'Gracias por registrarte en nuestra aplicación.',
+      );
 
       // Incluye el ID de la cuenta en el usuario retornado
       return {
