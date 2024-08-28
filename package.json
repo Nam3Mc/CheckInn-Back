@@ -38,16 +38,11 @@
     "cloudinary": "^2.4.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-"jwks-rsa": "^3.1.0",
-"passport": "^0.7.0",
-
-"jsonwebtoken": "^9.0.2",
-
-
-"nodemailer": "^6.9.14",
-
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
     "mercadopago": "^2.0.13",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",
