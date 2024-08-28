@@ -9,6 +9,7 @@ import { ReservationsRepository } from './reservations.repo';
 import { AccountsRepository } from './account.repo';
 import { UsersRepository } from './user.repo';
 import { RoomsRepository } from './rooms.repo';
+import { EmailService } from 'src/modules/commons/nodemailer.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Reservation, Account, Room])],
@@ -19,6 +20,7 @@ import { RoomsRepository } from './rooms.repo';
     AccountsRepository,
     UsersRepository,
     RoomsRepository,
+    EmailService
   ],
 })
 export class TestModule {}

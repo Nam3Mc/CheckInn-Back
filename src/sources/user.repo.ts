@@ -5,6 +5,7 @@ import { Account } from "src/modules/entities/accounts.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { AccountsRepository } from "./account.repo";
+import { EmailService } from "src/modules/commons/nodemailer.service";
 
 @Injectable()
 export class UsersRepository {
@@ -12,7 +13,8 @@ export class UsersRepository {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
-        private readonly accountsRepository: AccountsRepository
+        private readonly accountsRepository: AccountsRepository,
+        private readonly emailServices: EmailService
     ) {}
 
     async getUsers(): Promise<User[]> {
@@ -26,17 +28,25 @@ export class UsersRepository {
     }
 
     async addUser(userDto: CreateUserDto): Promise<Partial<User>> {
+        const { name, email, phone, password} = userDto
         const user = new User
         const account = new Account
         user.accounts = [account]
-        user.name = userDto.name
-        user.email = userDto.email
-        user.phone = userDto.phone
-        user.password = userDto.password
+        user.name = name
+        user.email = email
+        user.phone = phone
+        user.password = password
 
         const createdAccount = await this.accountsRepository.createAccount(account)
         const createdUser = await this.userRepository.save(user)
         
+        const subject: string = "Wellcome to Check-Inn Family"
+        const message: string = `
+        Dear ${name} 
+        Your Account was created successfuly
+        `
+        await this.emailServices.sendRegistrationEmail(userDto.email, subject, message)
+
         return createdUser
     }
 }
