@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -19,7 +20,7 @@ export class Inbox {
   @JoinColumn()
   account: Account;
 
-  @ManyToOne(() => Comment, (comment) => comment.inbox)
+  @OneToMany(() => Comment, (comment) => comment.inbox)
   comment: Comment[];
 
   @Column({ type: 'text' })
