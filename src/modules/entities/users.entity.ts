@@ -30,5 +30,5 @@ export class User {
   password: string;
 
   @OneToMany(() => Account, (account) => account.user)
-  accounts: Account[];
+  accounts: Account[];                             
 }

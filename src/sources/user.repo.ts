@@ -40,7 +40,7 @@ export class UsersRepository {
         const createdAccount = await this.accountsRepository.createAccount(account)
         const createdUser = await this.userRepository.save(user)
         
-        const subject: string = "Wellcome to Check-Inn Family"
+        const subject: string = "Wellcome to Check-Inn we are glad you are here"
         const message: string = `
         Dear ${name} 
         Your Account was created successfuly
