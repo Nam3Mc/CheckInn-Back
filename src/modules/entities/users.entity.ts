@@ -19,12 +19,12 @@ export class User {
 
   @Column({ length: 50, nullable: false })
   name: string;
-
+ 
   @Column({ unique: true, length: 50, nullable: false })
   email: string;
 
   @Column({ type: 'varchar', nullable: false })
-  phone: number;
+  phone: string;
 
   @Column({ type: 'varchar', nullable: false })
   password: string;
