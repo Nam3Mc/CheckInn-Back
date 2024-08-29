@@ -8,9 +8,13 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { EmailService } from '../commons/nodemailer.service';
+import { AccountsRepository } from '../accounts/accounts.repository';
+import { Subject } from 'rxjs';
+import { accountCreated } from 'src/sources/emails';
 
 @Injectable()
 export class AuthService {
+
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
@@ -19,6 +23,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly emailService: EmailService,
+    private readonly accountRepo: AccountsRepository
   ) {}
 
   async signUpService(user: Partial<User>) {
@@ -51,11 +56,9 @@ export class AuthService {
       newUser.roll = Roll.USER;
       await this.usersRepository.save(newUser);
 
-      await this.emailService.sendRegistrationEmail(
-        newUser.email,
-        'Bienvenido a nuestra aplicación',
-        'Gracias por registrarte en nuestra aplicación.',
-      );
+      const subject: string = "Welcome to Check-Inn"
+      const message = accountCreated(newUser)
+      await this.emailService.sendRegistrationEmail( newUser.email, subject, message);
 
       // Incluye el ID de la cuenta en el usuario retornado
       return {
@@ -118,5 +121,9 @@ export class AuthService {
       },
       token,
     };
+  }
+
+  resertPassword(email: string) {
+    return this.userService.resetPassword(email)
   }
 }

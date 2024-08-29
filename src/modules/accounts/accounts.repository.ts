@@ -6,6 +6,7 @@ import { CloudinaryService } from '../commons/cloudinary.service';
 
 @Injectable()
 export class AccountsRepository {
+
   constructor(
     @InjectRepository(Account)
     private readonly accountsRepository: Repository<Account>,
