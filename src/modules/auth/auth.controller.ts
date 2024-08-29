@@ -23,4 +23,9 @@ export class AuthController {
       body.phone,
     );
   }
+
+  @Post("resetpassword")
+  resetPassword(@Body()  email: string ) {
+    return this.authService.resertPassword(email)
+  }
 }
