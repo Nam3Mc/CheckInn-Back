@@ -1,16 +1,18 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AccountsRepository } from '../accounts/accounts.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/users.entity';
 import { Repository } from 'typeorm';
 import { Account } from '../entities/accounts.entity';
-import { privateDecrypt } from 'crypto';
+import { randomPassword } from 'src/utilities/randonPass';
+import { EmailService } from '../commons/nodemailer.service';
+import { passResetMessage } from 'src/sources/emails';
 
 @Injectable()
 export class UsersService {
   constructor(
   @InjectRepository(User) private userRepository:Repository<User>,
-  @InjectRepository(Account) private accountRepository:Repository<Account>
+  @InjectRepository(Account) private accountRepository:Repository<Account>,
+  private readonly emailService: EmailService
   ) {}
 
 
@@ -36,12 +38,9 @@ export class UsersService {
       return user || null;
     }
   
-  
   // update(id: number, updateUserDto: UpdateUserDto) {
   //   return `This action updates a #${id} user`;
   // }
-
-
 
   async deleteUserService(id: string): Promise<{ message: string }> {
     // Verifica si existen cuentas relacionadas antes de eliminar
@@ -57,5 +56,24 @@ export class UsersService {
     await this.userRepository.delete(id);
 
     return { message: 'User deleted successfully' };
+  }
+
+  async resetPassword(email: string) {
+    const user =await this.userRepository.findOne({
+      where:  { email: email }
+    })
+    if (!user) {
+      throw new BadRequestException("Sorry, this email doesn't own an account")
+    } 
+    else {
+
+      const temporalPassword = randomPassword()
+      user.password = temporalPassword
+      const subject: string = " Your Temporary Password"
+      const message = passResetMessage(user.name, temporalPassword)
+      
+      await this.emailService.sendRegistrationEmail(user.email, subject, message)
+    }
+    
   }
 }

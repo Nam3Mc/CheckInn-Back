@@ -10,6 +10,8 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt/jwt-strategy.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailService } from '../commons/nodemailer.service';
+import { AccountsRepository } from '../accounts/accounts.repository';
+import { CloudinaryService } from '../commons/cloudinary.service';
 
 @Module({
   imports: [
@@ -28,6 +30,6 @@ import { EmailService } from '../commons/nodemailer.service';
   ],
   exports: [AuthService],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, EmailService],
+  providers: [AuthService, JwtStrategy, EmailService, AccountsRepository, CloudinaryService],
 })
 export class AuthModule {}
