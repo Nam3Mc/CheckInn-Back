@@ -11,10 +11,11 @@ import { CloudinaryService } from '../commons/cloudinary.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Room])],
   controllers: [RoomsController],
-  providers: [RoomService, 
-    RoomsRepository, 
-    CloudinaryConfig, 
-    CloudinaryService
+  providers: [
+    RoomService,
+    RoomsRepository,
+    CloudinaryConfig,
+    CloudinaryService,
   ],
   exports: [RoomService],
 })

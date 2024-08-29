@@ -8,11 +8,10 @@ import { RoomsRepository } from './rooms.repository';
 
 @Injectable()
 export class RoomService {
-
   constructor(
     @InjectRepository(Room)
     private readonly roomsRepository: Repository<Room>,
-    private readonly roomsRepo: RoomsRepository
+    private readonly roomsRepo: RoomsRepository,
   ) {}
 
   async seedRooms() {
@@ -64,5 +63,4 @@ export class RoomService {
   addPhotos(file: Express.Multer.File) {
     // return this.roomsRepo.savePictures(file)
   }
-
 }

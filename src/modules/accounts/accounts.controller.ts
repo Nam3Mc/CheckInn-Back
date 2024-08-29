@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { Account } from '../entities/accounts.entity';
 import { sensitiveInfoInterceptor } from '../users/interceptors/sensitive-info/sensitive-info.interceptor';
@@ -29,11 +37,11 @@ export class AccountsController {
     return this.accountsService.getAccountById(id);
   }
 
-  @Post("picture")
+  @Post('picture')
   @Rolls(Roll.ADMIN, Roll.USER)
   @UseGuards(RollsGuard)
-  @UseInterceptors(FileInterceptor("picture"))
-  addProfilePicture(@UploadedFiles() file: Express.Multer.File ) {
-    return this.accountsService.addPicture(file)
+  @UseInterceptors(FileInterceptor('picture'))
+  addProfilePicture(@UploadedFiles() file: Express.Multer.File) {
+    return this.accountsService.addPicture(file);
   }
 }

@@ -24,7 +24,7 @@ import { CloudinaryService } from '../commons/cloudinary.service';
     AccountsRepository,
     RoomsRepository,
     CloudinaryConfig,
-    CloudinaryService
+    CloudinaryService,
   ],
 })
 export class ReservationsModule {}
