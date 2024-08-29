@@ -1,4 +1,7 @@
 import { SetMetadata } from '@nestjs/common';
 import { Roll } from 'src/modules/entities/users.entity';
 
-export const Rolls = (...rolls: Roll[]) => SetMetadata('rolls', rolls);
+export const ROLES_KEY = 'roles';
+
+// Crea el decorador @Rolls
+export const Rolls = (...roles: Roll[]) => SetMetadata(ROLES_KEY, roles);

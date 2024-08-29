@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -8,6 +9,7 @@ import {
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
+import { ReservationStatus } from '../entities/reservations.entity';
 
 export class CreateReservationDto {
   @IsOptional() //revisar
@@ -15,8 +17,8 @@ export class CreateReservationDto {
   price?: number;
 
   @IsOptional()
-  @IsBoolean()
-  status?: boolean;
+  @IsEnum(ReservationStatus)
+  status?: ReservationStatus;
 
   @IsNotEmpty()
   @IsDate()
@@ -52,8 +54,9 @@ export class ReservationResponseDto {
   @IsNumber()
   price?: number;
 
-  @IsBoolean()
-  status?: boolean;
+  @IsOptional()
+  @IsEnum(ReservationStatus)
+  status?: ReservationStatus;
 
   @IsString()
   checkin: string;

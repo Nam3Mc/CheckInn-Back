@@ -17,6 +17,7 @@ import { Rolls } from 'src/decorators/rolls.decorator';
 import { Roll } from '../entities/users.entity';
 import { RollsGuard } from 'src/guards/rolls.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('RESERVATIONS')
 @Controller('reservations')
@@ -36,8 +37,8 @@ export class ReservationsController {
   }
 
   @Post()
-  @Rolls(Roll.ADMIN || Roll.USER)
-  @UseGuards(RollsGuard)
+  // @Rolls(Roll.USER, Roll.ADMIN)
+  // @UseGuards(RollsGuard, AuthGuard)
   addReservation(@Body() reservation: CreateReservationDto) {
     return this.reservationsService.addReservation(reservation);
   }

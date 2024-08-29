@@ -10,6 +10,12 @@ import {
   Unique,
 } from 'typeorm';
 
+export enum RoomStatus {
+  AVAILABLE = 'available',
+  OCCUPIED = 'occupied',
+  CANCELLED = 'cancelled',
+}
+
 @Entity({
   name: 'rooms',
 })
@@ -39,8 +45,12 @@ export class Room {
   @Column()
   price: number;
 
-  @Column({ default: 'available' })
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: RoomStatus,
+    default: RoomStatus.AVAILABLE,
+  })
+  status: RoomStatus;
 
   @OneToMany(() => Reservation, (reservation) => reservation.room)
   reservation: Reservation[];

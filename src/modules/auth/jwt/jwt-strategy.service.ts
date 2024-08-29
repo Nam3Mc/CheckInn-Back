@@ -25,14 +25,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       algorithms: ['RS256'],
     });
   }
-  
+
   async validate(payload: Partial<User>) {
-    if (!payload.email || !payload.name || !payload.phone || !payload.password) {
+    if (
+      !payload.email ||
+      !payload.name ||
+      !payload.phone ||
+      !payload.password
+    ) {
       throw new Error('Payload incompleto');
     }
-    
+
     let user = await this.usersService.getUsersByEmailService(payload.email);
-  
+
     if (!user) {
       const newUser = await this.usersService.addUserService({
         email: payload.email,
@@ -40,11 +45,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         password: payload.password,
         phone: payload.phone,
       });
-    
+
       return { userId: newUser.id, email: newUser.email };
     }
-  
-    return { userId: user.id, email: user.email };
   }
-  
 }

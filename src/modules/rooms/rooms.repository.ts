@@ -58,4 +58,8 @@ export class RoomsRepository {
   async newReservation(reservationData: ReservationDto) {
     return 'In creation';
   }
+
+  async saveRoom(room: Room) {
+    return this.roomsRepository.save(room);
+  }
 }

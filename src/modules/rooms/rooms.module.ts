@@ -17,6 +17,6 @@ import { CloudinaryService } from '../commons/cloudinary.service';
     CloudinaryConfig,
     CloudinaryService,
   ],
-  exports: [RoomService],
+  exports: [RoomService, RoomsRepository],
 })
 export class RoomsModule {}
