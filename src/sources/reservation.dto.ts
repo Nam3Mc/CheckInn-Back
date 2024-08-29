@@ -1,12 +1,11 @@
 export class ReservationDto {
-    
-    checkIn: Date
+  checkIn: Date;
 
-    checkOut: Date
+  checkOut: Date;
 
-    roomId: string
+  roomId: string;
 
-    accountId: string
+  accountId: string;
 
-    guests: number
+  guests: number;
 }

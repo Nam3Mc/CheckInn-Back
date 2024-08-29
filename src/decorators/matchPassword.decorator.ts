@@ -1,4 +1,8 @@
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import {
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
 // Decorador personalizado que valida que las contraseñas coincidan
 @ValidatorConstraint({ name: 'MatchPassword', async: false })

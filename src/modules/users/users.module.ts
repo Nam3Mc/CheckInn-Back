@@ -8,9 +8,10 @@ import { Account } from '../entities/accounts.entity';
 import { EmailService } from '../commons/nodemailer.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User,Account])], 
+  imports: [TypeOrmModule.forFeature([User, Account])],
   exports: [UsersService],
   controllers: [UsersController],
   providers: [UsersService,UsersRepository, EmailService],
+
 })
 export class UsersModule {}

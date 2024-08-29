@@ -15,7 +15,6 @@ export class AccountsService {
   }
 
   addPicture(file: Express.Multer.File) {
-    return this.accountsRepository.savePicture(file)
+    return this.accountsRepository.savePicture(file);
   }
-
 }

@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Account } from './accounts.entity';
 import { Room } from './rooms.entity';
 import { Inbox } from './inbox.entity';
@@ -21,8 +27,7 @@ export class Comment {
 
   @ManyToOne(() => Room, (room) => room.comments)
   room: Room;
- 
-  @OneToMany(()=>Inbox,(inbox)=>inbox.comment)
-  inbox: Inbox
 
+  @OneToMany(() => Inbox, (inbox) => inbox.comment)
+  inbox: Inbox;
 }

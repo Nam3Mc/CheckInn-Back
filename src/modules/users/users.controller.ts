@@ -1,4 +1,5 @@
-import {UseGuards,
+import {
+  UseGuards,
   Controller,
   Get,
   Post,
@@ -21,9 +22,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-   @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @UseInterceptors(sensitiveInfoInterceptor)
-  getUsersController(@Query('page') page: number, @Query('limit') limit: number) {
+  getUsersController(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
     if (page && limit) {
       return this.usersService.getUsersService(page, limit);
     }
@@ -32,7 +36,7 @@ export class UsersController {
 
   @Post()
   addUserController(@Body() user: CreateUserDto) {
-    const {passwordConfirmation,...cleanUser} = user
+    const { passwordConfirmation, ...cleanUser } = user;
     return this.usersService.addUserService(cleanUser);
   }
 
@@ -48,7 +52,6 @@ export class UsersController {
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
   //   return this.usersService.update(+id, updateUserDto);
   // }
-  
 
   @Delete(':id')
   deleteUserController(@Param('id') id: string) {

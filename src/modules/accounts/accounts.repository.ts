@@ -10,7 +10,7 @@ export class AccountsRepository {
   constructor(
     @InjectRepository(Account)
     private readonly accountsRepository: Repository<Account>,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async findOne(id: string): Promise<Account> {

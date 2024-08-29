@@ -1,6 +1,10 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable,map } from 'rxjs';
-
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
+import { Observable, map } from 'rxjs';
 
 @Injectable()
 export class sensitiveInfoInterceptor implements NestInterceptor {
@@ -10,7 +14,7 @@ export class sensitiveInfoInterceptor implements NestInterceptor {
         // Función para excluir los campos password e isAdmin
         const excludeSensitiveFields = (obj: any) => {
           if (obj && typeof obj === 'object') {
-            const { password,passwordConfirmation,roll, ...result } = obj;
+            const { password, passwordConfirmation, roll, ...result } = obj;
             return result;
           }
           return obj;
@@ -18,7 +22,7 @@ export class sensitiveInfoInterceptor implements NestInterceptor {
 
         // Si data es un array, excluye los campos de cada objeto en el array
         if (Array.isArray(data)) {
-          return data.map(item => excludeSensitiveFields(item));
+          return data.map((item) => excludeSensitiveFields(item));
         }
 
         // Si data no es un array, excluye los campos del objeto

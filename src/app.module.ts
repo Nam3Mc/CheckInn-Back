@@ -13,6 +13,7 @@ import { RoomService } from './modules/rooms/rooms.service';
 import { TestModule } from './sources/general.module';
 import { JwtModule } from '@nestjs/jwt';
 import { inboxModule } from './modules/inbox/inbox.module';
+import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { inboxModule } from './modules/inbox/inbox.module';
     accountsModule,
     TestModule,
     inboxModule,
+    MercadoPagoModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,

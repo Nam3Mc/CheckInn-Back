@@ -44,12 +44,11 @@ export class RoomsController {
     return this.roomService.getRoom(id);
   }
 
-  @Post("photos")
+  @Post('photos')
   @Rolls(Roll.ADMIN)
   @UseGuards(RollsGuard)
-  @UseInterceptors(FileInterceptor("picture"))
-  addRoomPhoto(@UploadedFile() file: Express.Multer.File ) {
-    return this.roomService.addPhotos(file)
+  @UseInterceptors(FileInterceptor('picture'))
+  addRoomPhoto(@UploadedFile() file: Express.Multer.File) {
+    return this.roomService.addPhotos(file);
   }
-
 }
