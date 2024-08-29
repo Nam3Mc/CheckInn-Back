@@ -22,16 +22,13 @@ export class RollsGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    const hasRoll = () =>
-      requiredRolls.some((roll) => user?.roll.includes(roll));
-    const valid = user && user.roll && hasRoll();
 
-    if (!valid) {
+    if (!user || !requiredRolls.includes(user.roll)) {
       throw new ForbiddenException(
-        'You do not have permition and are not allow to access this route',
+        'You do not have permission to access this route',
       );
-    } else {
-      return valid;
     }
+
+    return true;
   }
 }

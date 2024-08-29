@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsNumber, IsString, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreatePaymentDto {
+export class MercadoPagoDto {
   @IsNumber()
   @IsNotEmpty()
   transaction_amount: number;
@@ -11,9 +11,5 @@ export class CreatePaymentDto {
 
   @IsString()
   @IsNotEmpty()
-  payment_method_id: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  payer_email: string; // Ajusta el campo para coincidir con el DTO y el servicio
+  reservationId: string; // ID de la reserva, si aplica
 }

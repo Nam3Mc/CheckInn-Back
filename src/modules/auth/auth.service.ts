@@ -111,6 +111,7 @@ export class AuthService {
       id: foundUser.id,
       email: foundUser.email,
       phone: foundUser.phone,
+      roll: foundUser.roll,
     };
     const token = this.jwtService.sign(payLoad);
 

@@ -2,6 +2,13 @@ import { Account } from './accounts.entity';
 import { Room } from './rooms.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+export enum ReservationStatus {
+  PENDING = 'pending',
+  CONFIRMED = 'confirmed',
+  PAID = 'paid',
+  CANCELLED = 'cancelled',
+}
+
 @Entity({
   name: 'reservations',
 })
@@ -12,8 +19,12 @@ export class Reservation {
   @Column({ type: 'float', nullable: false })
   price: number;
 
-  @Column()
-  status: boolean;
+  @Column({
+    type: 'enum',
+    enum: ReservationStatus,
+    default: ReservationStatus.PENDING,
+  })
+  status: ReservationStatus;
 
   @Column()
   checkin: Date;

@@ -12,11 +12,7 @@ import { CloudinaryConfig } from 'src/config/cloudinary';
 import { CloudinaryService } from '../commons/cloudinary.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Reservation]),
-    TypeOrmModule.forFeature([Room]),
-    TypeOrmModule.forFeature([Account]),
-  ],
+  imports: [TypeOrmModule.forFeature([Reservation, Room, Account])],
   controllers: [ReservationsController],
   providers: [
     ReservationsService,
@@ -26,5 +22,6 @@ import { CloudinaryService } from '../commons/cloudinary.service';
     CloudinaryConfig,
     CloudinaryService,
   ],
+  exports: [ReservationsRepository],
 })
 export class ReservationsModule {}
