@@ -39,7 +39,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @MinLength(8)
-  phone: number;
+  phone: string;
 
   @IsOptional()
   accounts?: Account[];
