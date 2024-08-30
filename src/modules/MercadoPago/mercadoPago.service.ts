@@ -34,6 +34,28 @@ export class MercadoPagoService {
 
   async createPaymentPreference(paymentData: MercadoPagoDto) {
     try {
+      const reservation =
+        await this.reservationsRepository.findOneWithRelations(
+          paymentData.reservationId,
+          ['room', 'account'],
+        );
+
+      if (!reservation) {
+        throw new NotFoundException('Reservation not found');
+      }
+
+      if (reservation.status !== ReservationStatus.PENDING) {
+        throw new BadRequestException(
+          'Reservation is not in a valid state for payment',
+        );
+      }
+
+      // Verifica que el transaction_amount coincida con el total de la reserva
+      if (paymentData.transaction_amount !== reservation.price) {
+        throw new BadRequestException(
+          'Transaction amount does not match reservation total',
+        );
+      }
       // Configura la preferencia de pago
       const preferenceData = {
         items: [
