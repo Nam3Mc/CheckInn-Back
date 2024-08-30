@@ -54,26 +54,26 @@ export class RoomsRepository {
     }
 }
 
-  async roomCalendar(
-    roomId: string,
-    checkIn: Date,
-    checkOut: Date,
-  ): Promise<boolean> {
-    const room: Room = await this.roomsRepository.findOne({
-      where: { id: roomId },
-    });
-    const reservations: Reservation[] = room.reservation;
-    for (const book of reservations) {
-      if (
-        checkIn >= book.checkin ||
-        checkIn < book.checkout ||
-        checkOut > book.checkin
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
+//   async roomCalendar(
+//     roomId: string,
+//     checkIn: Date,
+//     checkOut: Date,
+//   ): Promise<boolean> {
+//     const room: Room = await this.roomsRepository.findOne({
+//       where: { id: roomId },
+//     });
+//     const reservations: Reservation[] = room.reservation;
+//     for (const book of reservations) {
+//       if (
+//         checkIn >= book.checkin ||
+//         checkIn < book.checkout ||
+//         checkOut > book.checkin
+//       ) {
+//         return true;
+//       } else {
+//         return false;
+//       }
+//     }
+//   }
+// }
 
