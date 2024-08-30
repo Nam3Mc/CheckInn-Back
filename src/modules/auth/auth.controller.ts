@@ -2,7 +2,9 @@ import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../dto/users.dto';
 import { sensitiveInfoInterceptor } from '../users/interceptors/sensitive-info/sensitive-info.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -12,7 +14,7 @@ export class AuthController {
   signUpController(@Body() user: CreateUserDto) {
     return this.authService.signUpService(user);
   }
-
+  
   @Post('/login')
   loginController(
     @Body() body: { email: string; password: string; phone: number },
