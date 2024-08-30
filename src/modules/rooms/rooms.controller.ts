@@ -16,6 +16,7 @@ import { Rolls } from 'src/decorators/rolls.decorator';
 import { Roll } from '../entities/users.entity';
 import { RollsGuard } from 'src/guards/rolls.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { RoomFilterDto } from '../dto/rooms.dto';
 
 @ApiTags('ROOMS')
 @Controller('rooms')
@@ -36,6 +37,19 @@ export class RoomsController {
     }
   }
 
+  @Post('photos')
+  @Rolls(Roll.ADMIN)
+  @UseGuards(RollsGuard)
+  @UseInterceptors(FileInterceptor('picture'))
+  addRoomPhoto(@UploadedFile() file: Express.Multer.File) {
+    return this.roomService.addPhotos(file);
+  }
+
+  @Get('filter')
+  async getFilteredRooms(@Query() filterDto: RoomFilterDto) {
+    return this.roomService.getFilteredRooms(filterDto);
+  }
+
   @Get(':id')
   async getRoom(@Param('id') id: string) {
     if (!isUUID(id)) {
@@ -43,13 +57,4 @@ export class RoomsController {
     }
     return this.roomService.getRoom(id);
   }
-
-  @Post("photos")
-  @Rolls(Roll.ADMIN)
-  @UseGuards(RollsGuard)
-  @UseInterceptors(FileInterceptor("picture"))
-  addRoomPhoto(@UploadedFile() file: Express.Multer.File ) {
-    return this.roomService.addPhotos(file)
-  }
-
 }

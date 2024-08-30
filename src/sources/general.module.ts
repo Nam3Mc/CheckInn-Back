@@ -20,7 +20,7 @@ import { EmailService } from 'src/modules/commons/nodemailer.service';
     AccountsRepository,
     UsersRepository,
     RoomsRepository,
-    EmailService
+    EmailService,
   ],
 })
 export class TestModule {}

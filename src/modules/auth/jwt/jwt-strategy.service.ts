@@ -4,10 +4,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import * as jwksRsa from 'jwks-rsa';
 import { ConfigService } from '@nestjs/config';
 import { User } from 'src/modules/entities/users.entity';
+import { UsersService } from 'src/modules/users/users.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private usersService: UsersService, // Cambié el nombre a `usersService`
+  ) {
     super({
       secretOrKeyProvider: jwksRsa.expressJwtSecret({
         cache: true,
@@ -23,6 +27,26 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: Partial<User>) {
-    return { userId: payload.id, email: payload.email };
+    if (
+      !payload.email ||
+      !payload.name ||
+      !payload.phone ||
+      !payload.password
+    ) {
+      throw new Error('Payload incompleto');
+    }
+
+    let user = await this.usersService.getUsersByEmailService(payload.email);
+
+    if (!user) {
+      const newUser = await this.usersService.addUserService({
+        email: payload.email,
+        name: payload.name,
+        password: payload.password,
+        phone: payload.phone,
+      });
+
+      return { userId: newUser.id, email: newUser.email };
+    }
   }
 }

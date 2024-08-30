@@ -5,10 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Reservation } from '../entities/reservations.entity';
+import {
+  Reservation,
+  ReservationStatus,
+} from '../entities/reservations.entity';
 import { UpdateReservationDto } from '../dto/reservations.dto';
 import { AccountsRepository } from '../accounts/accounts.repository';
-import { Room } from '../entities/rooms.entity';
+import { Room, RoomStatus } from '../entities/rooms.entity';
 
 @Injectable()
 export class ReservationsRepository {
@@ -28,6 +31,20 @@ export class ReservationsRepository {
   async findOne(id: string) {
     const reservation = await this.reservationsRepository.findOne({
       where: { id },
+    });
+    if (!reservation) {
+      throw new NotFoundException(`Reservation with ID ${id} not found`);
+    }
+    return reservation;
+  }
+
+  async findOneWithRelations(
+    id: string,
+    relations: string[],
+  ): Promise<Reservation> {
+    const reservation = await this.reservationsRepository.findOne({
+      where: { id },
+      relations,
     });
     if (!reservation) {
       throw new NotFoundException(`Reservation with ID ${id} not found`);
@@ -91,12 +108,12 @@ export class ReservationsRepository {
     reservation.checkout.setDate(reservation.checkout.getDate() + nights);
     reservation.price = total;
     reservation.account = account;
-    reservation.status = true;
+    reservation.status = ReservationStatus.PENDING;
     reservation.room = room;
     reservation.guests = guests;
     reservation.hasMinor = hasMinor;
 
-    room.status = 'occupied';
+    room.status = RoomStatus.OCCUPIED;
     await this.roomsRepository.save(room);
 
     const newReservation = await this.reservationsRepository.save(reservation);
@@ -111,6 +128,11 @@ export class ReservationsRepository {
       total: total.toFixed(2),
     };
   }
+
+  async saveReservation(reservation: Reservation) {
+    return this.reservationsRepository.save(reservation);
+  }
+
   async update(
     id: string,
     updateReservationDto: UpdateReservationDto,
@@ -127,7 +149,7 @@ export class ReservationsRepository {
     }
     const room = reservation.room;
     if (room) {
-      room.status = 'available';
+      room.status = RoomStatus.AVAILABLE;
       await this.roomsRepository.save(room);
     }
     this.reservationsRepository.remove(reservation);

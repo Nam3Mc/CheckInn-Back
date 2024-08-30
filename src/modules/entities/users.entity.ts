@@ -24,11 +24,11 @@ export class User {
   email: string;
 
   @Column({ type: 'varchar', nullable: false })
-  phone: number;
+  phone: string;
 
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
   @OneToMany(() => Account, (account) => account.user)
-  accounts: Account[];                             
+  accounts: Account[];
 }
