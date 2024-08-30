@@ -1,31 +1,54 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsOptional,
+  IsNumber,
+  IsString,
+  IsNumberString,
+} from 'class-validator';
 
 export class RoomsDto {
-  @IsNotEmpty()
-  @IsNumber()
-  name: string;
-
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  description: string;
+  name?: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  beds: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  baths: number;
-
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  photos: string;
+  description?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
-  capacity: number;
+  beds?: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
-  price: number;
+  baths?: number;
+
+  @IsOptional()
+  @IsString()
+  photos?: string;
+
+  @IsOptional()
+  @IsNumber()
+  capacity?: number;
+
+  @IsOptional()
+  @IsNumber()
+  price?: number;
+}
+
+export class RoomFilterDto {
+  @IsOptional()
+  @IsNumberString()
+  readonly beds?: string;
+
+  @IsOptional()
+  @IsNumberString()
+  readonly baths?: string;
+
+  @IsOptional()
+  @IsNumberString()
+  readonly capacity?: string;
+
+  @IsOptional()
+  @IsNumberString()
+  readonly price?: string;
 }
