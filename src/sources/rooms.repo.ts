@@ -12,68 +12,56 @@ export class RoomsRepository {
   ) {}
 
   async getRooms(): Promise<Room[]> {
-    const rooms: Room[] = await this.roomsRepository.find();
-    return rooms;
+    return await this.roomsRepository.find();
   }
 
   async getRoomById(id: string): Promise<Room> {
-    const room = await this.roomsRepository.findOneBy({ id });
-    return room;
+    return await this.roomsRepository.findOneBy({ id });
   }
 
-    async isAvailable(roomId: string, checkIn: Date, checkOut: Date ): Promise<boolean> {
-        const room: Room = await this.roomsRepository.findOne({
-          where: {id: roomId}
-        })
-        const reservations: Reservation[] = room.reservation
-        for ( const book of reservations ) {
-            if (checkIn >= book.checkin || checkIn < book.checkout && checkOut > book.checkin ) {
-                return true
-            } else {
-                return false
-            }
-        }     
-    }
-
-    async roomCalendar( roomId: string) {
-        const room: Room = await this.roomsRepository.findOne({
-            where: {id: roomId},
-            relations: ["reservation"]
-        })
-
-        const dates = []
-        const reservations = room.reservation
-
-        for ( let book of reservations ) {
-            const { id, price, status, guests, hasMinor, ...date } = book
-            dates.push(date)
-            console.log(date.checkout.getDate()-date.checkin.getDate())
-        }
-
-        return dates
-    }
-}
-
-  async roomCalendar(
-    roomId: string,
-    checkIn: Date,
-    checkOut: Date,
-  ): Promise<boolean> {
+  async isAvailable(roomId: string, checkIn: Date, checkOut: Date): Promise<boolean> {
     const room: Room = await this.roomsRepository.findOne({
       where: { id: roomId },
+      relations: ['reservation']
     });
+
+    if (!room) {
+      throw new Error('Room not found');
+    }
+
     const reservations: Reservation[] = room.reservation;
-    for (const book of reservations) {
+
+    for (const reservation of reservations) {
       if (
-        checkIn >= book.checkin ||
-        checkIn < book.checkout ||
-        checkOut > book.checkin
+        (checkIn < reservation.checkout && checkOut > reservation.checkin) ||
+        (checkIn < reservation.checkin && checkOut > reservation.checkin)
       ) {
-        return true;
-      } else {
         return false;
       }
     }
+
+    return true;
+  }
+
+  async roomCalendar(roomId: string): Promise<any[]> {
+    const room: Room = await this.roomsRepository.findOne({
+      where: { id: roomId },
+      relations: ['reservation']
+    });
+
+    if (!room) {
+      throw new Error('Room not found');
+    }
+
+    const dates = [];
+    const reservations: Reservation[] = room.reservation;
+
+    for (const reservation of reservations) {
+      const { id, price, status, guests, hasMinor, ...date } = reservation;
+      dates.push(date);
+      console.log(date.checkout.getDate() - date.checkin.getDate());
+    }
+
+    return dates;
   }
 }
-

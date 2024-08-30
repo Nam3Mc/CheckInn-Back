@@ -49,9 +49,9 @@ export class TestControler {
         return this.reservationRepo.createReservation(book)
     }
   
-  @Post()
-  addUser(@Body() userDto: CreateUserDto) {
-    return this.userRepo.addUser(userDto);
-  }
+  // @Post()
+  // addUser(@Body() userDto: CreateUserDto) {
+    // return this.userRepo.addUser(userDto);
+  // }
 }
 
