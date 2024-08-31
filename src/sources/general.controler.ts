@@ -1,14 +1,14 @@
 
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { UsersRepository } from "./user.repo";
-import { AccountsRepository } from "./account.repo";
-import { RoomsRepository } from "./rooms.repo";
-import { ReservationsRepository } from "./reservations.repo";
-import { Rolls } from "src/decorators/rolls.decorator";
-import { Roll } from "src/modules/entities/users.entity";
-import { RollsGuard } from "src/guards/rolls.guard";
-import { CreateUserDto } from "src/modules/dto/users.dto";
-import { ReservationDto } from "./reservation.dto";
+// import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+// import { UsersRepository } from "./user.repo";
+// import { AccountsRepository } from "./account.repo";
+// import { RoomsRepository } from "./rooms.repo";
+// import { ReservationsRepository } from "./reservations.repo";
+// import { Rolls } from "src/decorators/rolls.decorator";
+// import { Roll } from "src/modules/entities/users.entity";
+// import { RollsGuard } from "src/guards/rolls.guard";
+// import { CreateUserDto } from "src/modules/dto/users.dto";
+// import { ReservationDto } from "./reservation.dto";
 
 
 // @Controller('test')
@@ -54,9 +54,3 @@ import { ReservationDto } from "./reservation.dto";
 //   //   return this.userRepo.addUser(userDto);
 //   // }
 // }
-  // @Post()
-  // addUser(@Body() userDto: CreateUserDto) {
-    // return this.userRepo.addUser(userDto);
-  // }
-}
-

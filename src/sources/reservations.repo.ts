@@ -28,18 +28,6 @@
 //     return reservations;
 //   }
 
-  async createReservation(reservationDetails: ReservationDto) {
-    const { checkIn, checkOut, roomId, accountId, guests } = reservationDetails;
-    const nights =
-      (checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24);
-    const room = await this.roomsRepository.getRoomById(roomId);
-    const account = await this.accountRepository.getAccountById(accountId);
-    const total = nights * room.price;
-    // const isReserved = await this.roomsRepository.roomCalendar(
-      // roomId,
-      // checkIn,
-      // checkOut,
-    // );
 //   async createReservation(reservationDetails: ReservationDto) {
 //     const { checkIn, checkOut, roomId, accountId, guests } = reservationDetails;
 //     const nights =
@@ -53,16 +41,6 @@
 //       checkOut,
 //     );
 
-    // if (isReserved) {
-      // throw new BadRequestException('This dates are not available');
-    // } else {
-      const reservation = new Reservation();
-      reservation.checkin = checkIn;
-      reservation.checkout = checkOut;
-      reservation.room = room;
-      reservation.account = account;
-      reservation.price = total;
-      reservation.guests = guests;
 //     if (isReserved) {
 //       throw new BadRequestException('This dates are not available');
 //     } else {
@@ -79,12 +57,6 @@
 //       return createdReservation;
 //     }
 
-    // async getUserReservations(id: string): Promise<Reservation[]> {
-        // const reservations: Reservation[] = await this.reservationsRepository.find({
-            // where: {id}
-        // })
-        // return reservations
-    // }
 //     async getUserReservations(id: string): Promise<Reservation[]> {
 //         const reservations: Reservation[] = await this.reservationsRepository.find({
 //             where: {id}
@@ -92,19 +64,11 @@
 //         return reservations
 //     }
 
-    // async createReservation(reservationDetails: ReservationDto) {
-        // const {checkIn, checkOut, roomId, accountId, guests} = reservationDetails
-        // const inn = new Date(checkIn)
-        // const out = new Date(checkOut)
 //     async createReservation(reservationDetails: ReservationDto) {
 //         const {checkIn, checkOut, roomId, accountId, guests} = reservationDetails
 //         const inn = new Date(checkIn)
 //         const out = new Date(checkOut)
 
-        // const nights = (out.getTime() - inn.getTime()) / (1000 * 60 * 60 * 24)
-        // const room = await this.roomsRepository.getRoomById(roomId)
-        // const account = await this.accountRepository.getAccountById(accountId)
-        // const total = nights * room.price
 //         const nights = (out.getTime() - inn.getTime()) / (1000 * 60 * 60 * 24)
 //         const room = await this.roomsRepository.getRoomById(roomId)
 //         const account = await this.accountRepository.getAccountById(accountId)
@@ -116,18 +80,6 @@
 //             // throw new BadRequestException("This dates are not available")
 //         // } else {
 
-            // const reservation = new Reservation
-            // reservation.checkin = checkIn
-            // reservation.checkout = checkOut
-            // reservation.room = room
-            // reservation.account = account
-            // reservation.price = total
-            // reservation.guests = guests
-            // 
-            // const createdReservation = await this.reservationsRepository.save(reservation)
-            // return createdReservation 
-        // }
-    // }
 //             const reservation = new Reservation
 //             reservation.checkin = checkIn
 //             reservation.checkout = checkOut
