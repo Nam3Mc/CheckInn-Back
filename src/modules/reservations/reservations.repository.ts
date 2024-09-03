@@ -37,6 +37,13 @@ export class ReservationsRepository {
     }
     return reservation;
   }
+  async findByUserId(userId: string): Promise<Reservation[]> {
+    return this.reservationsRepository
+      .createQueryBuilder('reservation')
+      .leftJoinAndSelect('reservation.account', 'account')
+      .where('account.id = :userId', { userId })
+      .getMany();
+  }
 
   async findOneWithRelations(
     id: string,
