@@ -38,4 +38,8 @@ export class ReservationsService {
   async remove(id: string) {
     return this.reservationsRepository.remove(id);
   }
+
+  async findByUserId(userId: string) {
+    return this.reservationsRepository.findByUserId(userId);
+  }
 }

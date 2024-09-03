@@ -36,6 +36,11 @@ export class ReservationsController {
     return this.reservationsService.findOne(id);
   }
 
+  @Get('user/:userId')
+  findByUserId(@Param('userId') userId: string) {
+    return this.reservationsService.findByUserId(userId);
+  }
+
   @Post()
   // @Rolls(Roll.USER, Roll.ADMIN)
   // @UseGuards(RollsGuard, AuthGuard)
@@ -44,7 +49,7 @@ export class ReservationsController {
   }
 
   @Put(':id')
-  @Rolls(Roll.ADMIN || Roll.USER)
+  @Rolls(Roll.ADMIN, Roll.USER)
   @UseGuards(RollsGuard)
   update(
     @Param('id') id: string,
@@ -54,7 +59,7 @@ export class ReservationsController {
   }
 
   @Delete(':id')
-  @Rolls(Roll.ADMIN || Roll.USER)
+  @Rolls(Roll.ADMIN, Roll.USER)
   @UseGuards(RollsGuard)
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);
