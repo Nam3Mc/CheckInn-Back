@@ -6,6 +6,7 @@ import { Account } from '../entities/accounts.entity';
 import { randomPassword } from 'src/utilities/randonPass';
 import { EmailService } from '../commons/nodemailer.service';
 import { passResetMessage } from 'src/sources/emails';
+import {Roll} from  '../entities/users.entity'
 
 @Injectable()
 export class UsersService {
@@ -14,6 +15,22 @@ export class UsersService {
   @InjectRepository(Account) private accountRepository:Repository<Account>,
   private readonly emailService: EmailService
   ) {}
+
+  async createUserFromGoogle(data: {
+    name: string;
+    email: string;
+    phone?: string;
+  }): Promise<User> {
+    const user = this.userRepository.create({
+      name: data.name,
+      email: data.email,
+      phone: data.phone || '', // Opcional, puedes proporcionar un valor predeterminado
+      roll: Roll.GUEST,
+      password: '', // Contraseña vacía o nula, ya que no se usa
+    });
+
+    return this.userRepository.save(user);
+  }
 
   async addUserService(
     user: Partial<User>,
