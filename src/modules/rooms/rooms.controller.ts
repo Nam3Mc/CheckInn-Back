@@ -29,12 +29,8 @@ export class RoomsController {
   }
 
   @Get()
-  getRooms(@Query('page') page: number, @Query('limit') limit: number) {
-    if (page && limit) {
-      return this.roomService.getRooms(page, limit);
-    } else {
-      return this.roomService.getRooms(1, 3);
-    }
+  async getRooms() {
+    return this.roomService.getRooms();
   }
 
   @Post('photos')
