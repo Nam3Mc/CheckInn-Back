@@ -14,7 +14,11 @@ export class AccountsService {
     return this.accountsRepository.findOne(id);
   }
 
-  addPicture(file: Express.Multer.File) {
-    return this.accountsRepository.savePicture(file);
+  async addPicture(
+    accountId: string,
+    file: Express.Multer.File,
+  ): Promise<Account> {
+    const photoUrl = await this.accountsRepository.savePicture(file);
+    return this.accountsRepository.updateAccountPhoto(accountId, photoUrl);
   }
 }

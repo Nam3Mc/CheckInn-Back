@@ -6,7 +6,6 @@ import { CloudinaryService } from '../commons/cloudinary.service';
 
 @Injectable()
 export class AccountsRepository {
-
   constructor(
     @InjectRepository(Account)
     private readonly accountsRepository: Repository<Account>,
@@ -41,5 +40,13 @@ export class AccountsRepository {
   async savePicture(file: Express.Multer.File): Promise<string> {
     const image = (await this.cloudinaryService.uploadImage(file)).url;
     return image;
+  }
+  async updateAccountPhoto(
+    accountId: string,
+    photoUrl: string,
+  ): Promise<Account> {
+    const account = await this.findOne(accountId);
+    account.photo = photoUrl;
+    return this.accountsRepository.save(account);
   }
 }
