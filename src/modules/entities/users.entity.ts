@@ -23,10 +23,10 @@ export class User {
   @Column({ unique: true, length: 50, nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   phone: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   password: string;
 
   @OneToMany(() => Account, (account) => account.user)

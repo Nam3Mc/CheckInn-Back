@@ -3,11 +3,26 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from '../dto/users.dto';
 import { sensitiveInfoInterceptor } from '../users/interceptors/sensitive-info/sensitive-info.interceptor';
 import { ApiTags } from '@nestjs/swagger';
-
+import { UsersService } from '../users/users.service';
 @ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService,
+    private readonly usersService: UsersService
+  ) {}
+
+
+  @Post('register-google')
+  async registerWithGoogle (@Body() googleUserData:any){
+    const {name,email,phone} = googleUserData;
+    
+    const user = await this.usersService.createUserFromGoogle({
+      name,
+      email,
+      phone,
+    });
+    return user
+  }
 
   @Post('/signUp')
   @UseInterceptors(sensitiveInfoInterceptor)
