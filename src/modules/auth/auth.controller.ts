@@ -24,6 +24,11 @@ export class AuthController {
     return user
   }
 
+  @Post('login-google')
+  async loginWithGoogle(@Body() body: { email: string }) {
+    return this.authService.loginWithGoogle(body.email);
+  }
+
   @Post('/signUp')
   @UseInterceptors(sensitiveInfoInterceptor)
   signUpController(@Body() user: CreateUserDto) {
