@@ -42,8 +42,8 @@ export class ReservationsController {
   }
 
   @Post()
+
   // @Rolls(Roll.ADMIN, Roll.USER)
-  // @UseGuards(RollsGuard)
   // @UseGuards(RollsGuard, AuthGuard)
   addReservation(@Body() reservation: CreateReservationDto) {
     return this.reservationsService.addReservation(reservation);

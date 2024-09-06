@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,UnauthorizedException  } from '@nestjs/common';
 import { Roll, User } from '../entities/users.entity';
 import { UsersService } from '../users/users.service';
 import { BadRequestException } from '@nestjs/common';
@@ -25,6 +25,24 @@ export class AuthService {
     private readonly emailService: EmailService,
     private readonly accountRepo: AccountsRepository
   ) {}
+
+  // Método para el login con Google
+  async loginWithGoogle(email: string): Promise<{ accessToken: string }> {
+    // Busca al usuario en la base de datos por el correo electrónico
+    const user = await this.userService.getUsersByEmailService(email);
+
+    if (!user) {
+      throw new UnauthorizedException('User not registered with Google');
+    }
+
+    // Si el usuario existe, generamos un token JWT
+    const payload = { email: user.email, sub: user.id };
+    const accessToken = this.jwtService.sign(payload);
+
+    return {
+      accessToken,
+    };
+  }
 
   async signUpService(user: Partial<User>) {
     const { email, password } = user;
