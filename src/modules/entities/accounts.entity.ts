@@ -19,7 +19,7 @@ export class Account {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 50, nullable: false, default: 'default-photo-url.jpg' })
+  @Column({ nullable: false, default: 'default-photo-url.jpg' })
   photo: string;
 
   // Relación uno a muchos con la entidad Comment.

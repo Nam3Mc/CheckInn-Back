@@ -3,6 +3,7 @@ import {
   Get,
   Param,
   Post,
+  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -22,8 +23,8 @@ export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
   @Get()
-  @Rolls(Roll.ADMIN)
-  @UseGuards(RollsGuard)
+  // @Rolls(Roll.ADMIN)
+  // @UseGuards(RollsGuard)
   //excluir informacion sensible
   async getAllAccounts(): Promise<Account[]> {
     return this.accountsService.getAllAccounts();
@@ -37,11 +38,14 @@ export class AccountsController {
     return this.accountsService.getAccountById(id);
   }
 
-  @Post('picture')
-  @Rolls(Roll.ADMIN, Roll.USER)
-  @UseGuards(RollsGuard)
-  @UseInterceptors(FileInterceptor('picture'))
-  addProfilePicture(@UploadedFiles() file: Express.Multer.File) {
-    return this.accountsService.addPicture(file);
+  @Post(':id/picture')
+  // @Rolls(Roll.ADMIN, Roll.USER)
+  // @UseGuards(RollsGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async addProfilePicture(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Account> {
+    return this.accountsService.addPicture(id, file);
   }
 }

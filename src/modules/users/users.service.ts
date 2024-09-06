@@ -6,14 +6,14 @@ import { Account } from '../entities/accounts.entity';
 import { randomPassword } from 'src/utilities/randonPass';
 import { EmailService } from '../commons/nodemailer.service';
 import { passResetMessage } from 'src/sources/emails';
-import {Roll} from  '../entities/users.entity'
+import { Roll } from '../entities/users.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-  @InjectRepository(User) private userRepository:Repository<User>,
-  @InjectRepository(Account) private accountRepository:Repository<Account>,
-  private readonly emailService: EmailService
+    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Account) private accountRepository: Repository<Account>,
+    private readonly emailService: EmailService,
   ) {}
 
   async createUserFromGoogle(data: {
@@ -25,7 +25,7 @@ export class UsersService {
       name: data.name,
       email: data.email,
       phone: data.phone || '', // Opcional, puedes proporcionar un valor predeterminado
-      roll: Roll.GUEST,
+      roll: Roll.USER,
       password: '', // Contraseña vacía o nula, ya que no se usa
     });
 
@@ -82,21 +82,22 @@ export class UsersService {
   }
 
   async resetPassword(email: string) {
-    const user =await this.userRepository.findOne({
-      where:  { email: email }
-    })
+    const user = await this.userRepository.findOne({
+      where: { email: email },
+    });
     if (!user) {
-      throw new BadRequestException("Sorry, this email doesn't own an account")
-    } 
-    else {
+      throw new BadRequestException("Sorry, this email doesn't own an account");
+    } else {
+      const temporalPassword = randomPassword();
+      user.password = temporalPassword;
+      const subject: string = ' Your Temporary Password';
+      const message = passResetMessage(user.name, temporalPassword);
 
-      const temporalPassword = randomPassword()
-      user.password = temporalPassword
-      const subject: string = " Your Temporary Password"
-      const message = passResetMessage(user.name, temporalPassword)
-      
-      await this.emailService.sendRegistrationEmail(user.email, subject, message)
+      await this.emailService.sendRegistrationEmail(
+        user.email,
+        subject,
+        message,
+      );
     }
-    
   }
 }

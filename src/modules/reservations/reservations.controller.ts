@@ -42,8 +42,9 @@ export class ReservationsController {
   }
 
   @Post()
-//  @Rolls(Roll.ADMIN  Roll.USER)
-//  @UseGuards( AuthGuard)
+
+  // @Rolls(Roll.ADMIN, Roll.USER)
+  // @UseGuards(RollsGuard, AuthGuard)
   addReservation(@Body() reservation: CreateReservationDto) {
     return this.reservationsService.addReservation(reservation);
   }
@@ -63,5 +64,9 @@ export class ReservationsController {
   @UseGuards(RollsGuard)
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);
+  }
+  @Get('availability/:roomId')
+  async getRoomAvailability(@Param('roomId') roomId: string): Promise<Date[]> {
+    return this.reservationsService.findRoomByAvalibity(roomId);
   }
 }
