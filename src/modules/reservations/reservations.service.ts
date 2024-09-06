@@ -42,4 +42,8 @@ export class ReservationsService {
   async findByUserId(userId: string) {
     return this.reservationsRepository.findByUserId(userId);
   }
+
+  async findRoomByAvalibity(roomId: string) {
+    return this.reservationsRepository.getRoomAvailability(roomId);
+  }
 }

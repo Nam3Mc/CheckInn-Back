@@ -84,9 +84,6 @@ export class ReservationsRepository {
     if (!room) {
       throw new NotFoundException(`Room with id: ${roomId} not found.`);
     }
-    if (room.status !== 'available') {
-      throw new NotFoundException(`The room with id: ${roomId} is occupied.`);
-    }
 
     if (room.capacity < guests) {
       throw new NotFoundException(
@@ -171,5 +168,28 @@ export class ReservationsRepository {
         hasMinor: reservation.hasMinor,
       },
     };
+  }
+  async getRoomAvailability(roomId: string): Promise<Date[]> {
+    const reservations = await this.reservationsRepository.find({
+      where: {
+        room: {
+          id: roomId, // Usa la relación para filtrar las reservas
+        },
+      },
+    });
+
+    const bookedDates: Date[] = [];
+    reservations.forEach((reservation: Reservation) => {
+      const checkinDate = new Date(reservation.checkin);
+      const checkoutDate = new Date(reservation.checkout);
+
+      let currentDate = new Date(checkinDate);
+      while (currentDate <= checkoutDate) {
+        bookedDates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    });
+
+    return bookedDates;
   }
 }
