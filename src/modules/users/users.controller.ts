@@ -22,8 +22,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @UseGuards(JwtGuard)
-  @UseInterceptors(sensitiveInfoInterceptor)
+  //  @UseGuards(JwtGuard)
+  //@UseInterceptors(sensitiveInfoInterceptor)
   getUsersController(
     @Query('page') page: number,
     @Query('limit') limit: number,
