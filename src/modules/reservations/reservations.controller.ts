@@ -42,15 +42,14 @@ export class ReservationsController {
   }
 
   @Post()
-
-  // @Rolls(Roll.ADMIN, Roll.USER)
-  // @UseGuards(RollsGuard, AuthGuard)
+  @Rolls(Roll.USER, Roll.ADMIN)
+  @UseGuards(RollsGuard, AuthGuard)
   addReservation(@Body() reservation: CreateReservationDto) {
     return this.reservationsService.addReservation(reservation);
   }
 
   @Put(':id')
-  @Rolls(Roll.ADMIN, Roll.USER)
+  @Rolls(Roll.USER, Roll.ADMIN)
   @UseGuards(RollsGuard)
   update(
     @Param('id') id: string,
@@ -60,7 +59,7 @@ export class ReservationsController {
   }
 
   @Delete(':id')
-  @Rolls(Roll.ADMIN, Roll.USER)
+  @Rolls(Roll.USER, Roll.ADMIN)
   @UseGuards(RollsGuard)
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);

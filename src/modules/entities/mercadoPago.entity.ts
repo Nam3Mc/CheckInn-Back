@@ -2,33 +2,26 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Reservation } from './reservations.entity';
 
 @Entity()
 export class MercadoPago {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   paymentId: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50, nullable: false })
   status: string;
 
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   amount: number;
 
-  @Column()
-  currency: string;
-
-  @Column()
-  method: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @OneToOne(() => Reservation, (reservation) => reservation.payment)
+  @JoinColumn()
+  reservation: Reservation;
 }

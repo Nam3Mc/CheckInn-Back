@@ -50,7 +50,6 @@ export class MercadoPagoService {
         );
       }
 
-      // Verifica que el transaction_amount coincida con el total de la reserva
       if (paymentData.transaction_amount !== reservation.price) {
         throw new BadRequestException(
           'Transaction amount does not match reservation total',
@@ -68,22 +67,21 @@ export class MercadoPagoService {
           },
         ],
         back_urls: {
-          success: 'https://your-website.com/success', // URL a la que se redirige después de un pago exitoso
-          failure: 'https://your-website.com/failure', // URL a la que se redirige si el pago falla
-          pending: 'https://your-website.com/pending', // URL a la que se redirige si el pago está pendiente
+          success: 'http://localhost:3000/reservations',
+          failure: 'http://localhost:3000/reservations',
+          pending: 'http://localhost:3000/reservations',
         },
-        auto_return: 'approved', // Opcional: Redirige automáticamente después de que el pago sea aprobado
-        notification_url: 'https://your-website.com/notification', // Opcional: URL para recibir notificaciones de eventos de pago
+        auto_return: 'approved',
+        notification_url: 'https://your-website.com/notification',
       };
 
       // Crea la preferencia de pago
       const response = await this.preference.create({ body: preferenceData });
 
-      // Guarda la referencia de la preferencia en la base de datos si es necesario
-      await this.processReservationPayment(paymentData.reservationId);
+      // // Guarda la referencia de la preferencia en la base de datos si es necesario
 
       return {
-        init_point: response.init_point, // URL para redirigir al usuario
+        init_point: response.init_point,
       };
     } catch (error) {
       throw new BadRequestException(
@@ -92,7 +90,10 @@ export class MercadoPagoService {
     }
   }
 
-  private async processReservationPayment(reservationId: string) {
+  async updateReservationStatus(
+    reservationId: string,
+    status: ReservationStatus,
+  ) {
     try {
       const reservation =
         await this.reservationsRepository.findOneWithRelations(reservationId, [
@@ -104,35 +105,22 @@ export class MercadoPagoService {
         throw new NotFoundException('Reservation not found');
       }
 
-      if (reservation.status === ReservationStatus.PAID) {
-        throw new BadRequestException('Reservation is already paid');
-      }
+      reservation.status = status;
 
-      if (reservation.status !== ReservationStatus.PENDING) {
-        throw new BadRequestException(
-          'Reservation is not in a valid state for payment',
-        );
-      }
-
-      // Marcamos la reserva como pagada
-      reservation.status = ReservationStatus.PAID;
-
-      // Actualizamos la disponibilidad de la habitación
       const room = reservation.room;
-      room.status = RoomStatus.OCCUPIED;
+      if (status === ReservationStatus.PAID) {
+        room.status = RoomStatus.OCCUPIED;
+      }
 
-      // Guardamos los cambios en la base de datos
       await this.roomsRepository.saveRoom(room);
       await this.reservationsRepository.saveReservation(reservation);
 
-      // Podrías incluir aquí lógica adicional, como enviar notificaciones al usuario.
-
       return {
-        message: 'Payment processed and reservation confirmed successfully',
+        message: 'Reservation status updated successfully',
       };
     } catch (error) {
       throw new BadRequestException(
-        `Error processing reservation: ${error.message}`,
+        `Error updating reservation status: ${error.message}`,
       );
     }
   }
