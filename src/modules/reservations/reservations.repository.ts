@@ -12,6 +12,7 @@ import {
 import { UpdateReservationDto } from '../dto/reservations.dto';
 import { AccountsRepository } from '../accounts/accounts.repository';
 import { Room, RoomStatus } from '../entities/rooms.entity';
+import { MercadoPago } from '../entities/mercadoPago.entity';
 
 @Injectable()
 export class ReservationsRepository {
@@ -19,6 +20,8 @@ export class ReservationsRepository {
     @InjectRepository(Reservation)
     private readonly reservationsRepository: Repository<Reservation>,
     private readonly accountsRepository: AccountsRepository,
+    @InjectRepository(MercadoPago)
+    private readonly mercadoPagoRepository: Repository<MercadoPago>,
 
     @InjectRepository(Room)
     private readonly roomsRepository: Repository<Room>,
@@ -156,6 +159,13 @@ export class ReservationsRepository {
       room.status = RoomStatus.AVAILABLE;
       await this.roomsRepository.save(room);
     }
+
+    const payments = await this.mercadoPagoRepository.find({
+      where: { reservation: { id } },
+    });
+    for (const payment of payments) {
+      await this.mercadoPagoRepository.remove(payment);
+    }
     this.reservationsRepository.remove(reservation);
 
     return {
@@ -191,5 +201,63 @@ export class ReservationsRepository {
     });
 
     return bookedDates;
+  }
+
+  async updateReservationWithPayment(
+    reservationId: string,
+    paymentId: string,
+    paymentStatus: string,
+    amount: number, // Añade amount como argumento
+  ): Promise<Reservation> {
+    const reservation = await this.findOneWithRelations(reservationId, [
+      'room',
+      'payment',
+    ]);
+    if (!reservation) {
+      throw new NotFoundException(
+        `Reservation with ID ${reservationId} not found`,
+      );
+    }
+
+    if (reservation.status !== ReservationStatus.PENDING) {
+      throw new BadRequestException(
+        'Reservation is not in a valid state for payment update',
+      );
+    }
+
+    if (paymentStatus === 'approved') {
+      reservation.status = ReservationStatus.PAID;
+      // Create or update MercadoPago entity
+      let mercadoPago = reservation.payment;
+
+      if (mercadoPago) {
+        // Update existing MercadoPago entity
+        mercadoPago.paymentId = paymentId;
+        mercadoPago.status = paymentStatus;
+        mercadoPago.amount = amount; // Asegúrate de establecer el amount
+
+        await this.mercadoPagoRepository.save(mercadoPago);
+      } else {
+        // Create new MercadoPago entity
+        mercadoPago = new MercadoPago();
+        mercadoPago.paymentId = paymentId;
+        mercadoPago.status = paymentStatus;
+        mercadoPago.amount = amount; // Asegúrate de establecer el amount
+
+        // Set other fields as necessary
+        mercadoPago.reservation = reservation;
+        await this.mercadoPagoRepository.save(mercadoPago);
+
+        // Associate the new MercadoPago entity with the reservation
+        reservation.payment = mercadoPago;
+      }
+
+      reservation.room.status = RoomStatus.OCCUPIED;
+      await this.roomsRepository.save(reservation.room);
+
+      return this.reservationsRepository.save(reservation);
+    } else {
+      throw new BadRequestException('Payment has not been approved.');
+    }
   }
 }

@@ -1,6 +1,14 @@
 import { Account } from './accounts.entity';
+import { MercadoPago } from './mercadoPago.entity';
 import { Room } from './rooms.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum ReservationStatus {
   PENDING = 'pending',
@@ -43,4 +51,11 @@ export class Reservation {
 
   @Column({ type: 'boolean', default: false })
   hasMinor: boolean;
+
+  @OneToOne(() => MercadoPago, (mercadoPago) => mercadoPago.reservation, {
+    cascade: true, // Permite la eliminación en cascada
+    onDelete: 'CASCADE', // Asegura que se eliminen las entradas en mercado_pago
+  })
+  @JoinColumn()
+  payment: MercadoPago;
 }

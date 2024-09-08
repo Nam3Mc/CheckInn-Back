@@ -10,9 +10,12 @@ import { Room } from '../entities/rooms.entity';
 import { Account } from '../entities/accounts.entity';
 import { CloudinaryConfig } from 'src/config/cloudinary';
 import { CloudinaryService } from '../commons/cloudinary.service';
+import { MercadoPago } from '../entities/mercadoPago.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reservation, Room, Account])],
+  imports: [
+    TypeOrmModule.forFeature([Reservation, Room, Account, MercadoPago]),
+  ],
   controllers: [ReservationsController],
   providers: [
     ReservationsService,
@@ -22,6 +25,6 @@ import { CloudinaryService } from '../commons/cloudinary.service';
     CloudinaryConfig,
     CloudinaryService,
   ],
-  exports: [ReservationsRepository],
+  exports: [ReservationsRepository, ReservationsService],
 })
 export class ReservationsModule {}
