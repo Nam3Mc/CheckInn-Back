@@ -20,17 +20,19 @@ export class UsersService {
     name: string;
     email: string;
     phone?: string;
+    roll: Roll;
   }): Promise<User> {
     const user = this.userRepository.create({
       name: data.name,
       email: data.email,
-      phone: data.phone || '', // Opcional, puedes proporcionar un valor predeterminado
-      roll: Roll.USER,
-      password: '', // Contraseña vacía o nula, ya que no se usa
+      phone: data.phone || '', 
+      roll: data.roll || Roll.USER, 
+      password: '', 
     });
-
+  
     return this.userRepository.save(user);
   }
+  
 
   async addUserService(
     user: Partial<User>,

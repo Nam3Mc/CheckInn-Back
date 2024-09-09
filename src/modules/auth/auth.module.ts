@@ -20,8 +20,12 @@ import { CloudinaryService } from '../commons/cloudinary.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET') || 'yourSecretKey',
-        signOptions: { expiresIn: '1h' },
+        secret: configService.get<string>('JWT_SECRET'), // Usa la clave secreta aquí si usas HS256
+      
+        signOptions: { 
+          expiresIn: '1h',
+          algorithm: 'HS256', // Asegúrate de que esto esté configurado si usas RS256
+        },
       }),
     }),
     ConfigModule,
