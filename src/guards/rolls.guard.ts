@@ -23,6 +23,9 @@ export class RollsGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
+    console.log('User role:', user?.roll); // Log para verificar el rol del usuario
+    console.log('Required roles:', requiredRolls); // Log para verificar los roles requeridos
+
     if (!user || !requiredRolls.includes(user.roll)) {
       throw new ForbiddenException(
         'You do not have permission to access this route',
