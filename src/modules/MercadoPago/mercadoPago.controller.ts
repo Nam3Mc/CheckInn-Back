@@ -16,6 +16,7 @@ import { Response } from 'express';
 import { Rolls } from 'src/decorators/rolls.decorator';
 import { RollsGuard } from 'src/guards/rolls.guard';
 import { Roll } from '../entities/users.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 export interface PaymentNotification {
   id: string;
@@ -31,7 +32,7 @@ export class MercadoPagoController {
 
   @Post('create')
   @Rolls(Roll.USER, Roll.ADMIN)
-  @UseGuards(RollsGuard)
+  @UseGuards(AuthGuard, RollsGuard)
   async createPayment(@Body() paymentData: MercadoPagoDto) {
     const preference =
       await this.mercadoPagoService.createPaymentPreference(paymentData);
@@ -40,7 +41,7 @@ export class MercadoPagoController {
 
   @Post('complete-payment/:reservationId')
   @Rolls(Roll.USER, Roll.ADMIN)
-  @UseGuards(RollsGuard)
+  @UseGuards(AuthGuard, RollsGuard)
   async completePayment(
     @Param('reservationId') reservationId: string,
     @Body() body: { transaction_amount: number; description: string },
@@ -63,7 +64,7 @@ export class MercadoPagoController {
 
   @Post('notification')
   @Rolls(Roll.USER, Roll.ADMIN)
-  @UseGuards(RollsGuard)
+  @UseGuards(AuthGuard, RollsGuard)
   async handlePaymentNotification(@Body() notificationData: any) {
     try {
       const { id, status, external_reference } = notificationData;

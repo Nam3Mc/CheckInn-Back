@@ -9,9 +9,11 @@ import { BadRequestException } from '@nestjs/common';
 @ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService,
-    private readonly usersService: UsersService
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
   ) {}
+
 
   @Post("/login-google")
   async loginGoogleController(@Body() body: { email: string }) {
@@ -19,6 +21,7 @@ export class AuthController {
       throw new BadRequestException('Email is required');
     }
     return this.authService.loginWithGoogleService(body.email);
+
   }
 
   @Post('/register-google')
@@ -37,7 +40,7 @@ export class AuthController {
     }
     return this.authService.signUpService(user);
   }
-  
+
   @Post('/login')
   async loginController(
     @Body() body: { email: string; password: string; phone: number },
@@ -53,6 +56,7 @@ export class AuthController {
   }
 
   @Post('resetpassword')
+
   async resetPassword(@Body() body: { email: string }) {
     if (!body.email) {
       throw new BadRequestException('Email is required');
