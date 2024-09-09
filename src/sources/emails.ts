@@ -1,7 +1,10 @@
-import { User } from "src/modules/entities/users.entity";
+import { User } from 'src/modules/entities/users.entity';
 
-export function passResetMessage(name: string, temporalPassword: string): string {
-    const message = `
+export function passResetMessage(
+  name: string,
+  temporalPassword: string,
+): string {
+  const message = `
     Dear ${name},
 
     We received a request to reset the password for your Check-Inn account. As requested, we have generated a temporary password for you.
@@ -24,19 +27,19 @@ export function passResetMessage(name: string, temporalPassword: string): string
     Check-Inn Support Team
     `;
 
-    return message;
+  return message;
 }
 
-export function accountCreated(user: User): string {
-    const message = `
-    Dear ${user.name},
-
-    Welcome to Check-In! We're thrilled to have you as part of our community.
-
-    Thank you for joining Check-Inm ! We look forward to seeing you around.
-
-    Best regards,
-    Check-Inm Team
-    `
-    return message;
+// En sources/emails.ts
+export function accountCreated(user: { name: string }): string {
+  return `
+      Welcome ${user.name}, to Check-Inn
+    
+      We're thrilled to have you as part of our community.
+    
+      Thank you for joining Check-In! We look forward to seeing you around.
+    
+      Best regards,
+      Check-In Team
+    `;
 }

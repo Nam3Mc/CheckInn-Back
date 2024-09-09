@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { Roll, User } from '../entities/users.entity';
 import { UsersService } from '../users/users.service';
 import { Account } from '../entities/accounts.entity';
@@ -12,7 +16,6 @@ import { accountCreated } from 'src/sources/emails';
 
 @Injectable()
 export class AuthService {
-
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
@@ -21,7 +24,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly emailService: EmailService,
-    private readonly accountRepo: AccountsRepository
+    private readonly accountRepo: AccountsRepository,
   ) {}
 
   async registerWithGoogle(user: Partial<User>): Promise<User> {
@@ -31,7 +34,9 @@ export class AuthService {
       }
 
       // Verifica si el usuario ya existe en la base de datos
-      const existingUser = await this.userService.getUsersByEmailService(user.email);
+      const existingUser = await this.userService.getUsersByEmailService(
+        user.email,
+      );
       if (existingUser) {
         throw new BadRequestException('User already registered');
       }
@@ -56,8 +61,12 @@ export class AuthService {
 
       // Enviar correo de bienvenida
       const subject: string = 'Welcome to Check-Inn';
-      const message = accountCreated(newUser);
-      await this.emailService.sendRegistrationEmail(newUser.email, subject, message);
+      const htmlContent = accountCreated(newUser);
+      await this.emailService.sendRegistrationEmail(
+        newUser.email,
+        subject,
+        htmlContent,
+      );
 
       return newUser; // Devolviendo el nuevo usuario con la cuenta creada
     } catch (error) {
@@ -66,10 +75,9 @@ export class AuthService {
     }
   }
 
-
-
-
-  async loginWithGoogleService(email: string): Promise<{ accessToken: string }> {
+  async loginWithGoogleService(
+    email: string,
+  ): Promise<{ accessToken: string }> {
     try {
       if (!email) {
         throw new BadRequestException('Email is required');
@@ -92,7 +100,6 @@ export class AuthService {
     }
   }
 
-  
   async signUpService(user: Partial<User>) {
     const { email, password } = user;
 
@@ -127,14 +134,17 @@ export class AuthService {
       await this.usersRepository.save(newUser);
 
       const subject: string = 'Welcome to Check-Inn';
-      const message = accountCreated(newUser);
-      await this.emailService.sendRegistrationEmail(newUser.email, subject, message);
+      const htmlContent = accountCreated(newUser);
+      await this.emailService.sendRegistrationEmail(
+        newUser.email,
+        subject,
+        htmlContent,
+      );
 
       return {
         ...newUser,
         accountId: savedAccount.id,
-      };   // Crea una nueva cuenta asociada al usuario
-   
+      }; // Crea una nueva cuenta asociada al usuario
     } catch (error) {
       if (error instanceof BadRequestException) {
         throw error; // Relanzar la excepción personalizada
@@ -175,7 +185,7 @@ export class AuthService {
       id: foundUser.id,
       email: foundUser.email,
       phone: foundUser.phone,
-      roll: Roll.GUEST
+      roll: Roll.GUEST,
     };
     const token = this.jwtService.sign(payload);
 
