@@ -14,6 +14,8 @@ import { TestModule } from './sources/general.module';
 import { JwtModule } from '@nestjs/jwt';
 import { inboxModule } from './modules/inbox/inbox.module';
 import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -21,6 +23,10 @@ import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => config.get('typeorm'),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'src', 'roomsPhotos'),
+      serveRoot: '/roomsPhotos',
     }),
     UsersModule,
     RoomsModule,
