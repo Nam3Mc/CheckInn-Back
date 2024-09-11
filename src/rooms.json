@@ -1,16 +1,16 @@
 [
   {
     "name": "101",
-    "description": "Cozy room with a single bed, perfect for solo travelers. It includes a full bathroom and all the essential amenities for a comfortable and relaxing stay.",
+    "description": "Cozy room with a single bed, ideal for solo travelers. Includes a full bathroom and all essential amenities for a comfortable and relaxing stay.",
     "beds": 1,
     "baths": 1,
-    "photos": "/roomsPhotos/room101.avif",
+    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/1e/02/528967fa11c6fade7b035f0893a3a15d2a003a8a914e60d92ed44c06997d.jpeg/",
     "capacity": 2,
     "price": 100
   },
   {
     "name": "102",
-    "description": "Spacious room with two single beds, ideal for friends or colleagues sharing a room without sacrificing comfort. It includes a full bathroom.",
+    "description": "Spacious room with two single beds, perfect for friends or colleagues who want to share a room without sacrificing comfort. Includes a full bathroom.",
     "beds": 2,
     "baths": 1,
     "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/7a/e0/b9b47fc33d61135d59d8ce58ab6c7460730b65c922480538f76ed66204c6.jpeg",
@@ -19,7 +19,7 @@
   },
   {
     "name": "103",
-    "description": "This room offers a quiet and elegant atmosphere with a single bed and an additional bathroom for extra comfort. Ideal for those who value personal space.",
+    "description": "This room offers a tranquil and elegant atmosphere with a single bed and an additional bathroom for added comfort. Ideal for those who value personal space.",
     "beds": 1,
     "baths": 2,
     "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/1e/02/528967fa11c6fade7b035f0893a3a15d2a003a8a914e60d92ed44c06997d.jpeg/",
@@ -46,7 +46,7 @@
   },
   {
     "name": "106",
-    "description": "Standard room with a single bed and a full bathroom, perfect for a short stay or a business trip.",
+    "description": "Standard room with a single bed and a full bathroom, perfect for a short stay or business trip.",
     "beds": 1,
     "baths": 1,
     "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/1e/02/528967fa11c6fade7b035f0893a3a15d2a003a8a914e60d92ed44c06997d.jpeg/",
@@ -82,7 +82,7 @@
   },
   {
     "name": "110",
-    "description": "Family room with two single beds and two bathrooms, ideal for families or groups who need extra space and privacy.",
+    "description": "Family room with two single beds and two bathrooms, ideal for families or groups who need additional space and privacy.",
     "beds": 2,
     "baths": 2,
     "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/7a/e0/b9b47fc33d61135d59d8ce58ab6c7460730b65c922480538f76ed66204c6.jpeg",
@@ -118,7 +118,7 @@
   },
   {
     "name": "114",
-    "description": "Spacious room with three single beds, perfect for groups or families who need a large and comfortable space for their stay.",
+    "description": "Spacious room with three single beds, perfect for groups or families who need ample and comfortable space for their stay.",
     "beds": 3,
     "baths": 1,
     "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/44/ce/cca89e7d8b141ea69aa18fad203b919a98d91a39584038831747a508ae96.jpeg",
@@ -127,56 +127,56 @@
   },
   {
     "name": "115",
-    "description": "Comfortable room with two single beds and a full bathroom, ideal for a relaxing and enjoyable stay.",
+    "description": "Comfortable room with two single beds and two bathrooms, ideal for small families or groups of friends looking for a pleasant stay.",
     "beds": 2,
-    "baths": 1,
+    "baths": 2,
     "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/7a/e0/b9b47fc33d61135d59d8ce58ab6c7460730b65c922480538f76ed66204c6.jpeg",
-    "capacity": 4,
-    "price": 120
+    "capacity": 3,
+    "price": 140
   },
   {
     "name": "116",
-    "description": "Deluxe room with a queen-sized bed and a private bathroom, offering a touch of elegance and comfort for those seeking a luxurious stay.",
+    "description": "Standard room with a single bed, equipped with all necessary amenities for a relaxing stay.",
     "beds": 1,
     "baths": 1,
-    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/3a/b0/e0bda7f71c3563e59c69af8d16d6fd67.jpeg",
+    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/1e/02/528967fa11c6fade7b035f0893a3a15d2a003a8a914e60d92ed44c06997d.jpeg/",
     "capacity": 2,
-    "price": 200
+    "price": 100
   },
   {
     "name": "117",
-    "description": "Modern room with two single beds and a full bathroom, ideal for travelers seeking a stylish and comfortable place to rest.",
-    "beds": 2,
+    "description": "Cozy room with a single bed and a full bathroom, ideal for travelers seeking comfort in a tranquil environment.",
+    "beds": 1,
     "baths": 1,
-    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/3a/b0/e0bda7f71c3563e59c69af8d16d6fd67.jpeg",
-    "capacity": 3,
-    "price": 160
+    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/1e/02/528967fa11c6fade7b035f0893a3a15d2a003a8a914e60d92ed44c06997d.jpeg/",
+    "capacity": 2,
+    "price": 100
   },
   {
     "name": "118",
-    "description": "Spacious room with a king-sized bed and two full bathrooms, perfect for couples or individuals looking for a bit of luxury and extra comfort.",
+    "description": "Room with a single bed and two bathrooms, designed to provide the perfect balance between comfort and privacy.",
     "beds": 1,
     "baths": 2,
-    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/7f/8e/daf356b84f2163775b498d1ea32c7b6b.jpeg",
+    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/1e/02/528967fa11c6fade7b035f0893a3a15d2a003a8a914e60d92ed44c06997d.jpeg/",
     "capacity": 2,
-    "price": 220
+    "price": 110
   },
   {
     "name": "119",
-    "description": "Family suite with three single beds, a spacious living area, and a full bathroom, designed for families or groups seeking comfort and convenience.",
-    "beds": 3,
+    "description": "Spacious room with two single beds and a full bathroom, ideal for small families or groups looking for comfort and space.",
+    "beds": 2,
     "baths": 1,
-    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/3a/b0/e0bda7f71c3563e59c69af8d16d6fd67.jpeg",
-    "capacity": 5,
-    "price": 240
+    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/7a/e0/b9b47fc33d61135d59d8ce58ab6c7460730b65c922480538f76ed66204c6.jpeg",
+    "capacity": 3,
+    "price": 130
   },
   {
     "name": "120",
-    "description": "Premium room with a king-sized bed, two full bathrooms, and a private balcony offering stunning views, ideal for guests looking to indulge in luxury.",
-    "beds": 1,
+    "description": "Family room with two single beds and two bathrooms, perfect for groups or families looking for comfortable and well-equipped accommodation.",
+    "beds": 2,
     "baths": 2,
-    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/7f/8e/daf356b84f2163775b498d1ea32c7b6b.jpeg",
-    "capacity": 2,
-    "price": 300
+    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/7a/e0/b9b47fc33d61135d59d8ce58ab6c7460730b65c922480538f76ed66204c6.jpeg",
+    "capacity": 4,
+    "price": 140
   }
 ]
