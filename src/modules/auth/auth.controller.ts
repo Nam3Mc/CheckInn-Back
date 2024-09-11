@@ -21,38 +21,25 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
-  @Post('/login-google')
+  
+
+  @Post('/login-googgle')
   async loginGoogleController(@Body() body: { accessToken: string }) {
     if (!body.accessToken) {
-      throw new UnauthorizedException('Access token required');
+      throw new UnauthorizedException('Acces token required');
     }
 
-    try {
-      // Verifica el token de acceso con Google y obtén la información del usuario
-      const response = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${body.accessToken}`);
-      const { email } = response.data;
+    return this.authService.loginWithGoogleService(body.accessToken)
 
-      if (!email) {
-        throw new UnauthorizedException('Google token invalid');
-      }
-
-      // Llama al servicio de autenticación con el email obtenido
-      return this.authService.loginWithGoogleService(email);
-
-    } catch (error) {
-      console.error('Error verifying Google access token:', error);
-      throw new UnauthorizedException('Google login failed');
-    }
   }
 
-
   // @Post('/login-googgle')
-  // async loginGoogleController(@Body() body: { accessToken: string }) {
-  //   if (!body.accessToken) {
+  // async loginGoogleController(@Body() body: { email: string }) {
+  //   if (!body.email) {
   //     throw new UnauthorizedException('Acces token required');
   //   }
 
-  //   return this.authService.loginWithGoogleService(body.accessToken)
+  //   return this.authService.loginWithGoogleService(body.email)
 
   // }
 
