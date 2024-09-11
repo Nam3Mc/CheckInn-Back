@@ -1,10 +1,17 @@
-import { Body, Controller, Post, UnauthorizedException, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from '../dto/users.dto';
 import { sensitiveInfoInterceptor } from '../users/interceptors/sensitive-info/sensitive-info.interceptor';
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from '../users/users.service';
 import { BadRequestException } from '@nestjs/common';
+import axios from 'axios';
 
 @ApiTags('AUTH')
 @Controller('auth')
@@ -14,42 +21,39 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
+  
 
-  // @Post("/login-google")
-  // async loginGoogleController(@Body() body: { email: string }) {
-  //   if (!body.email) {
-  //     throw new BadRequestException('Email is required');
+  // @Post('/login-google')
+  // async loginGoogleController(@Body() body: { accessToken: string }) {
+  //   if (!body.accessToken) {
+  //     throw new UnauthorizedException('Acces token required');
   //   }
-  //   return this.authService.loginWithGoogleService(body.email);
+
+  //   return this.authService.loginWithGoogleService(body.accessToken)
+
   // }
 
-
- // @Post('/login-googgle')
- // async loginGoogleController(@Body() body : {accessToken : string}) {
-   // if(!body.accessToken){
-     // throw new UnauthorizedException('Acces token required')
-    }
-
-
-  @Post("/login-google")
+  @Post('/login-google')
   async loginGoogleController(@Body() body: { email: string }) {
     if (!body.email) {
-      throw new BadRequestException('Email is required');
+      throw new UnauthorizedException('Register with google first token required');
     }
-    return this.authService.loginWithGoogleService(body.email);
 
+    return this.authService.loginWithGoogleService(body.email)
 
   }
 
 
   @Post('/register-google')
-  async registerGoogleController(@Body() body: { name: string; email: string; phone?: string }) {
+  async registerGoogleController(
+    @Body() body: { name: string; email: string; phone?: string },
+  ) {
     if (!body.name || !body.email) {
       throw new BadRequestException('Name and email are required');
     }
     return this.authService.registerWithGoogle(body);
   }
-  
+
   @Post('/signUp')
   @UseInterceptors(sensitiveInfoInterceptor)
   async signUpController(@Body() user: CreateUserDto) {
@@ -64,7 +68,9 @@ export class AuthController {
     @Body() body: { email: string; password: string; phone: number },
   ) {
     if (!body.email || !body.password || body.phone === undefined) {
-      throw new BadRequestException('Email, password, and phone number are required');
+      throw new BadRequestException(
+        'Email, password, and phone number are required',
+      );
     }
     return this.authService.signInService(
       body.email,
@@ -74,7 +80,6 @@ export class AuthController {
   }
 
   @Post('resetpassword')
-
   async resetPassword(@Body() body: { email: string }) {
     if (!body.email) {
       throw new BadRequestException('Email is required');

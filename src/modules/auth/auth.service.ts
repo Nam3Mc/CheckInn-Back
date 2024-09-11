@@ -27,91 +27,87 @@ export class AuthService {
     private readonly accountRepo: AccountsRepository,
   ) {}
 
+
+/* --------------REGISTRO  GOOGLE--------*/
   async registerWithGoogle(user: Partial<User>): Promise<User> {
     try {
+      // Verificar si el nombre y el correo están presentes
       if (!user.name || !user.email) {
         throw new BadRequestException('Name and email are required');
       }
-
-      // Verifica si el usuario ya existe en la base de datos
-      const existingUser = await this.userService.getUsersByEmailService(
-        user.email,
-      );
+  
+      // Verificar si el usuario ya está registrado
+      const existingUser = await this.userService.getUsersByEmailService(user.email);
       if (existingUser) {
         throw new BadRequestException('User already registered');
       }
-
-      // Crea el usuario en la base de datos local usando la función createUserFromGoogle
+  
+      // Crear un nuevo usuario en la base de datos usando la función createUserFromGoogle
       const newUser = await this.userService.createUserFromGoogle({
         name: user.name,
         email: user.email,
         phone: user.phone,
-        roll: Roll.USER,
+        roll: Roll.USER, // Asigna el rol de usuario por defecto
       });
-
-      // Crea la nueva cuenta asociada al usuario
+  
+      // Crear una nueva cuenta asociada al usuario
       const newAccount = this.accountsRepository.create({
         user: newUser,
       });
       const savedAccount = await this.accountsRepository.save(newAccount);
-
-      // Asigna el accountId al nuevo usuario y guarda los cambios
+  
+      // Asignar la nueva cuenta al usuario
       newUser.accounts = [savedAccount];
       await this.usersRepository.save(newUser);
-
+  
       // Enviar correo de bienvenida
       const subject: string = 'Welcome to Check-Inn';
-
-      const message = accountCreated(newUser);
-      await this.emailService.sendRegistrationEmail(
-        newUser.email,
-        subject,
-        message,
-
- //     const htmlContent = accountCreated(newUser);
-   //   await this.emailService.sendRegistrationEmail(
-     //   newUser.email,
-       // subject,
-
-      );
-
-      return newUser; // Devolviendo el nuevo usuario con la cuenta creada
+      const message = accountCreated(newUser); // Contenido del correo
+      await this.emailService.sendRegistrationEmail(newUser.email, subject, message);
+  
+      // Devolver el nuevo usuario con la cuenta creada
+      return newUser;
     } catch (error) {
       console.error('Error in registerWithGoogle:', error);
       throw new BadRequestException('Error registering user with Google');
     }
   }
+  
+  
+  /*------------INICIO DE SESION CON GOOGLE ----------*/
 
-
-  async loginWithGoogleService(email: string) {
-
-   // async loginWithGoogleService(
-  //  email: string,
- //  ): Promise<{ accessToken: string }> {
-
+  async loginWithGoogleService(
+    email: string,
+  ): Promise<{ message: string; accessToken: string }> {
     try {
       if (!email) {
         throw new BadRequestException('Email is required');
       }
-
-      // Busca al usuario en la base de datos por el correo electrónico
+  
+      // Busca el usuario por email incluyendo la relación con la cuenta
       const user = await this.userService.getUsersByEmailService(email, {
         relations: ['accounts'],
       });
+  
       if (!user) {
         throw new UnauthorizedException('User not registered with Google');
       }
-
-      // Genera un token JWT
+  
+      // Obtén el id de la cuenta asociada
+      const accountId = user.accounts?.[0]?.id;
+  
       const payload = {
         email: user.email,
         id: user.id,
+        roll: user.roll,
+        accountId: accountId, // Solo el accountId en el payload
       };
+  
+      // Genera el token JWT con el payload
       const accessToken = this.jwtService.sign(payload);
-
+  
       return {
-        message: 'Google user logged succesfully',
-        user: { ...user },
+        message: 'Google user logged successfully',
         accessToken,
       };
     } catch (error) {
@@ -119,7 +115,9 @@ export class AuthService {
       throw new UnauthorizedException('Error logging in with Google');
     }
   }
+  
 
+/*----------------------REGISTRO------------------*/
   async signUpService(user: Partial<User>) {
     const { email, password } = user;
 
@@ -155,16 +153,16 @@ export class AuthService {
 
       const subject: string = 'Welcome to Check-Inn';
 
-      const message = accountCreated(newUser);
-      await this.emailService.sendRegistrationEmail(
-        newUser.email,
-        subject,
+      // const message = accountCreated(newUser);
+      // await this.emailService.sendRegistrationEmail(
+      //   newUser.email,
+      //   subject,
 
-      //const htmlContent = accountCreated(newUser);
-      //await this.emailService.sendRegistrationEmail(
-       // newUser.email,
-       // subject,
-       // htmlContent,
+      const htmlContent = accountCreated(newUser);
+      await this.emailService.sendRegistrationEmail(
+       newUser.email,
+       subject,
+       newUser.name
 
       );
 
@@ -181,6 +179,9 @@ export class AuthService {
       }
     }
   }
+
+
+/*-----------LOG IN --------*/
 
   async signInService(email: string, password: string, phone: number) {
     if (!email) {
@@ -223,6 +224,7 @@ export class AuthService {
     };
   }
 
+  /*------------ RESTABLECER CONTRASEÑA------------*/
   async resetPassword(email: string) {
     if (!email) {
       throw new BadRequestException('Email is required');
