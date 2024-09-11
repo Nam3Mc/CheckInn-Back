@@ -14,8 +14,9 @@ import { TestModule } from './sources/general.module';
 import { JwtModule } from '@nestjs/jwt';
 import { inboxModule } from './modules/inbox/inbox.module';
 import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
+import { AppGateway } from './app.gateway'; // Mantener AppGateway
 import { join } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
+import { ServeStaticModule } from '@nestjs/serve-static'; // Mantener ServeStaticModule
 
 @Module({
   imports: [
@@ -42,7 +43,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway], // Mantener ambos proveedores
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly roomService: RoomService) {}
@@ -53,3 +54,4 @@ export class AppModule implements OnModuleInit {
     await this.roomService.seedRooms();
   }
 }
+
