@@ -10,6 +10,6 @@ import { InboxService } from './inbox.service';
   imports: [TypeOrmModule.forFeature([Inbox])],
   controllers: [InboxController],
   providers: [ChatGateway, InboxRepository, InboxService],
-  exports: [],
+  exports: [InboxService],
 })
 export class inboxModule {}

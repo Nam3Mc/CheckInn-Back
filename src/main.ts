@@ -2,12 +2,27 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { IoAdapter } from '@nestjs/platform-socket.io';
+import { ServerOptions } from 'socket.io';
 
+// Extender IoAdapter para manejar opciones de CORS
+class CustomIoAdapter extends IoAdapter {
+  constructor(app: any) {
+    super(app);
+  }
 
-
-
-import * as bodyParser from 'body-parser';
-
+  createIOServer(port: number, options?: ServerOptions): any {
+    const corsOptions = {
+      cors: {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST', 'DELETE', 'PUT'],
+        credentials: true,
+      },
+    };
+    const server = super.createIOServer(port, { ...options, ...corsOptions });
+    return server;
+  }
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,14 +35,29 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
+  // Utilizamos el adaptador personalizado que incluye la configuración de CORS
+  app.useWebSocketAdapter(new CustomIoAdapter(app));
+
   app.useGlobalPipes(new ValidationPipe());
+
+  // Configuración de CORS para solicitudes HTTP
   app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    origin: '*',  // Permite solicitudes desde el frontend
+    methods: 'GET, PUT, PATCH, POST, DELETE',
     allowedHeaders: 'Content-Type, Authorization',
   });
-  app.use(bodyParser.json());
 
   await app.listen(8080);
 }
 bootstrap();
+
+  // app.use((req, res, next) => {
+  //   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  //   res.header(
+  //     "Access-Control-Allow-Headers",
+  //     "Origin, X-Requested-With, Content-Type, Accept"
+  //   );
+  //   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  //   next();
+  // });
+

@@ -14,6 +14,8 @@ import { TestModule } from './sources/general.module';
 import { JwtModule } from '@nestjs/jwt';
 import { inboxModule } from './modules/inbox/inbox.module';
 import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
+import { AppGateway } from './app.gateway';
+
 
 @Module({
   imports: [
@@ -37,7 +39,8 @@ import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,AppGateway],
+  
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly roomService: RoomService) {}

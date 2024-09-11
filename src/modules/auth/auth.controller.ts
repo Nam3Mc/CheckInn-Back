@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from '../dto/users.dto';
 import { sensitiveInfoInterceptor } from '../users/interceptors/sensitive-info/sensitive-info.interceptor';
@@ -13,13 +13,23 @@ export class AuthController {
     private readonly usersService: UsersService
   ) {}
 
-  @Post("/login-google")
-  async loginGoogleController(@Body() body: { email: string }) {
-    if (!body.email) {
-      throw new BadRequestException('Email is required');
+  // @Post("/login-google")
+  // async loginGoogleController(@Body() body: { email: string }) {
+  //   if (!body.email) {
+  //     throw new BadRequestException('Email is required');
+  //   }
+  //   return this.authService.loginWithGoogleService(body.email);
+  // }
+
+
+  @Post('/login-googgle')
+  async loginGoogleController(@Body() body : {accessToken : string}) {
+    if(!body.accessToken){
+      throw new UnauthorizedException('Acces token required')
     }
-    return this.authService.loginWithGoogleService(body.email);
+    return this.authService.loginWithGoogleService(body.accessToken)
   }
+
 
   @Post('/register-google')
   async registerGoogleController(@Body() body: { name: string; email: string; phone?: string }) {
