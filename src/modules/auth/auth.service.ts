@@ -61,11 +61,18 @@ export class AuthService {
 
       // Enviar correo de bienvenida
       const subject: string = 'Welcome to Check-Inn';
+
       const message = accountCreated(newUser);
       await this.emailService.sendRegistrationEmail(
         newUser.email,
         subject,
         message,
+
+ //     const htmlContent = accountCreated(newUser);
+   //   await this.emailService.sendRegistrationEmail(
+     //   newUser.email,
+       // subject,
+
       );
 
       return newUser; // Devolviendo el nuevo usuario con la cuenta creada
@@ -75,7 +82,13 @@ export class AuthService {
     }
   }
 
+
   async loginWithGoogleService(email: string) {
+
+   // async loginWithGoogleService(
+  //  email: string,
+ //  ): Promise<{ accessToken: string }> {
+
     try {
       if (!email) {
         throw new BadRequestException('Email is required');
@@ -129,7 +142,7 @@ export class AuthService {
       const newUser = (await this.userService.addUserService({
         ...user,
         password: hashedPassword,
-        roll: Roll.GUEST,
+        roll: Roll.USER,
       })) as User;
 
       const newAccount = this.accountsRepository.create({
@@ -141,11 +154,18 @@ export class AuthService {
       await this.usersRepository.save(newUser);
 
       const subject: string = 'Welcome to Check-Inn';
+
       const message = accountCreated(newUser);
       await this.emailService.sendRegistrationEmail(
         newUser.email,
         subject,
-        message,
+
+      //const htmlContent = accountCreated(newUser);
+      //await this.emailService.sendRegistrationEmail(
+       // newUser.email,
+       // subject,
+       // htmlContent,
+
       );
 
       return {

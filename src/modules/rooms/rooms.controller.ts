@@ -17,6 +17,7 @@ import { Roll } from '../entities/users.entity';
 import { RollsGuard } from 'src/guards/rolls.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { RoomFilterDto } from '../dto/rooms.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('ROOMS')
 @Controller('rooms')
@@ -35,7 +36,7 @@ export class RoomsController {
 
   @Post('photos')
   @Rolls(Roll.ADMIN)
-  @UseGuards(RollsGuard)
+  @UseGuards(AuthGuard, RollsGuard)
   @UseInterceptors(FileInterceptor('picture'))
   addRoomPhoto(@UploadedFile() file: Express.Multer.File) {
     return this.roomService.addPhotos(file);

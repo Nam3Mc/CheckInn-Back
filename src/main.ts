@@ -27,17 +27,19 @@ class CustomIoAdapter extends IoAdapter {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Configuración de Swagger
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Checkinn')
     .addBearerAuth()
     .build();
-
+  
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
   // Utilizamos el adaptador personalizado que incluye la configuración de CORS
   app.useWebSocketAdapter(new CustomIoAdapter(app));
 
+  // Usar ValidationPipe globalmente
   app.useGlobalPipes(new ValidationPipe());
 
   // Configuración de CORS para solicitudes HTTP
