@@ -14,6 +14,9 @@ import { TestModule } from './sources/general.module';
 import { JwtModule } from '@nestjs/jwt';
 import { inboxModule } from './modules/inbox/inbox.module';
 import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
+import { AppGateway } from './app.gateway'; // Mantener AppGateway
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static'; // Mantener ServeStaticModule
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => config.get('typeorm'),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
     UsersModule,
     RoomsModule,
@@ -37,7 +43,7 @@ import { MercadoPagoModule } from './modules/MercadoPago/mercadoPago.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway], // Mantener ambos proveedores
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly roomService: RoomService) {}
@@ -48,3 +54,4 @@ export class AppModule implements OnModuleInit {
     await this.roomService.seedRooms();
   }
 }
+
