@@ -23,7 +23,13 @@ import { AuthGuard } from 'src/guards/auth.guard';
 @Controller('reservations')
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
+  
+  @Get('availability/:roomId')
+  async getRoomAvailability(@Param('roomId') roomId: string): Promise<Date[]> {
+    return this.reservationsService.findRoomByAvalibity(roomId);
+  }
 
+  
   @Get()
   @Rolls(Roll.ADMIN)
   @UseGuards(RollsGuard)
@@ -64,8 +70,6 @@ export class ReservationsController {
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);
   }
-  @Get('availability/:roomId')
-  async getRoomAvailability(@Param('roomId') roomId: string): Promise<Date[]> {
-    return this.reservationsService.findRoomByAvalibity(roomId);
-  }
+
+  
 }
