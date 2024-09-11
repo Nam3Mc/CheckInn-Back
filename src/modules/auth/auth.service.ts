@@ -61,11 +61,18 @@ export class AuthService {
 
       // Enviar correo de bienvenida
       const subject: string = 'Welcome to Check-Inn';
-      const htmlContent = accountCreated(newUser);
+
+      const message = accountCreated(newUser);
       await this.emailService.sendRegistrationEmail(
         newUser.email,
         subject,
-        htmlContent,
+        message,
+
+ //     const htmlContent = accountCreated(newUser);
+   //   await this.emailService.sendRegistrationEmail(
+     //   newUser.email,
+       // subject,
+
       );
 
       return newUser; // Devolviendo el nuevo usuario con la cuenta creada
@@ -75,25 +82,38 @@ export class AuthService {
     }
   }
 
-  async loginWithGoogleService(
-    email: string,
-  ): Promise<{ accessToken: string }> {
+
+  async loginWithGoogleService(email: string) {
+
+   // async loginWithGoogleService(
+  //  email: string,
+ //  ): Promise<{ accessToken: string }> {
+
     try {
       if (!email) {
         throw new BadRequestException('Email is required');
       }
 
       // Busca al usuario en la base de datos por el correo electrónico
-      const user = await this.userService.getUsersByEmailService(email);
+      const user = await this.userService.getUsersByEmailService(email, {
+        relations: ['accounts'],
+      });
       if (!user) {
         throw new UnauthorizedException('User not registered with Google');
       }
 
       // Genera un token JWT
-      const payload = { email: user.email, sub: user.id };
+      const payload = {
+        email: user.email,
+        id: user.id,
+      };
       const accessToken = this.jwtService.sign(payload);
 
-      return { accessToken };
+      return {
+        message: 'Google user logged succesfully',
+        user: { ...user },
+        accessToken,
+      };
     } catch (error) {
       console.error('Error in loginWithGoogleService:', error);
       throw new UnauthorizedException('Error logging in with Google');
@@ -134,11 +154,18 @@ export class AuthService {
       await this.usersRepository.save(newUser);
 
       const subject: string = 'Welcome to Check-Inn';
-      const htmlContent = accountCreated(newUser);
+
+      const message = accountCreated(newUser);
       await this.emailService.sendRegistrationEmail(
         newUser.email,
         subject,
-        htmlContent,
+
+      //const htmlContent = accountCreated(newUser);
+      //await this.emailService.sendRegistrationEmail(
+       // newUser.email,
+       // subject,
+       // htmlContent,
+
       );
 
       return {
@@ -185,7 +212,7 @@ export class AuthService {
       id: foundUser.id,
       email: foundUser.email,
       phone: foundUser.phone,
-      roll: Roll.GUEST,
+      roll: Roll.USER,
     };
     const token = this.jwtService.sign(payload);
 
