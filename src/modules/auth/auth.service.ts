@@ -122,7 +122,7 @@ export class AuthService {
       const newUser = (await this.userService.addUserService({
         ...user,
         password: hashedPassword,
-        roll: Roll.GUEST,
+        roll: Roll.USER,
       })) as User;
 
       const newAccount = this.accountsRepository.create({
