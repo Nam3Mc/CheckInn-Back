@@ -27,6 +27,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
+    
     UsersModule,
     RoomsModule,
     AuthModule,
