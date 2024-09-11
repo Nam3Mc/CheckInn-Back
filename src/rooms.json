@@ -4,7 +4,7 @@
     "description": "Cozy room with a single bed, ideal for solo travelers. Includes a full bathroom and all essential amenities for a comfortable and relaxing stay.",
     "beds": 1,
     "baths": 1,
-    "photos": "https://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_1020,q_auto,w_2000/partner-images/1e/02/528967fa11c6fade7b035f0893a3a15d2a003a8a914e60d92ed44c06997d.jpeg/",
+    "photos": "/roomsPhotos/room101.avif",
     "capacity": 2,
     "price": 100
   },
