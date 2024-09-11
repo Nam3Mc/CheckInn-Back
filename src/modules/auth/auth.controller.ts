@@ -23,25 +23,25 @@ export class AuthController {
 
   
 
-  @Post('/login-googgle')
-  async loginGoogleController(@Body() body: { accessToken: string }) {
-    if (!body.accessToken) {
-      throw new UnauthorizedException('Acces token required');
-    }
-
-    return this.authService.loginWithGoogleService(body.accessToken)
-
-  }
-
-  // @Post('/login-googgle')
-  // async loginGoogleController(@Body() body: { email: string }) {
-  //   if (!body.email) {
+  // @Post('/login-google')
+  // async loginGoogleController(@Body() body: { accessToken: string }) {
+  //   if (!body.accessToken) {
   //     throw new UnauthorizedException('Acces token required');
   //   }
 
-  //   return this.authService.loginWithGoogleService(body.email)
+  //   return this.authService.loginWithGoogleService(body.accessToken)
 
   // }
+
+  @Post('/login-google')
+  async loginGoogleController(@Body() body: { email: string }) {
+    if (!body.email) {
+      throw new UnauthorizedException('Register with google first token required');
+    }
+
+    return this.authService.loginWithGoogleService(body.email)
+
+  }
 
 
   @Post('/register-google')
