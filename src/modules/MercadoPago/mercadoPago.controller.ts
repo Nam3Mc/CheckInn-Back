@@ -31,8 +31,8 @@ export class MercadoPagoController {
   ) {}
 
   @Post('create')
-  @Rolls(Roll.USER, Roll.ADMIN)
-  @UseGuards(AuthGuard, RollsGuard)
+  // @Rolls(Roll.USER, Roll.ADMIN)
+  // @UseGuards(AuthGuard, RollsGuard)
   async createPayment(@Body() paymentData: MercadoPagoDto) {
     const preference =
       await this.mercadoPagoService.createPaymentPreference(paymentData);

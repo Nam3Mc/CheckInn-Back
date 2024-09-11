@@ -75,10 +75,9 @@ export class AuthService {
   
   
   /*------------INICIO DE SESION CON GOOGLE ----------*/
-
   async loginWithGoogleService(
     email: string,
-  ): Promise<{ message: string; accessToken: string }> {
+  ): Promise<{ user: any; message: string; accessToken: string }> {
     try {
       if (!email) {
         throw new BadRequestException('Email is required');
@@ -107,6 +106,11 @@ export class AuthService {
       const accessToken = this.jwtService.sign(payload);
   
       return {
+        user: {
+          id: user.id,
+          email: user.email,
+          roll: user.roll,
+        },
         message: 'Google user logged successfully',
         accessToken,
       };
@@ -116,7 +120,6 @@ export class AuthService {
     }
   }
   
-
 /*----------------------REGISTRO------------------*/
   async signUpService(user: Partial<User>) {
     const { email, password } = user;
