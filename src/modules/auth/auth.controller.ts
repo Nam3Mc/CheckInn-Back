@@ -11,6 +11,7 @@ import { sensitiveInfoInterceptor } from '../users/interceptors/sensitive-info/s
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from '../users/users.service';
 import { BadRequestException } from '@nestjs/common';
+import axios from 'axios';
 
 @ApiTags('AUTH')
 @Controller('auth')
@@ -20,27 +21,41 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
-  // @Post("/login-google")
-  // async loginGoogleController(@Body() body: { email: string }) {
-  //   if (!body.email) {
-  //     throw new BadRequestException('Email is required');
-  //   }
-  //   return this.authService.loginWithGoogleService(body.email);
-  // }
-
-  @Post('/login-googgle')
+  @Post('/login-google')
   async loginGoogleController(@Body() body: { accessToken: string }) {
     if (!body.accessToken) {
-      throw new UnauthorizedException('Acces token required');
+      throw new UnauthorizedException('Access token required');
+    }
+
+    try {
+      // Verifica el token de acceso con Google y obtén la información del usuario
+      const response = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${body.accessToken}`);
+      const { email } = response.data;
+
+      if (!email) {
+        throw new UnauthorizedException('Google token invalid');
+      }
+
+      // Llama al servicio de autenticación con el email obtenido
+      return this.authService.loginWithGoogleService(email);
+
+    } catch (error) {
+      console.error('Error verifying Google access token:', error);
+      throw new UnauthorizedException('Google login failed');
     }
   }
 
-  // @Post("/login-google")
-  // async loginGoogleController(@Body() body: { email: string }) {
-  //   if (!body.email) {
-  //     throw new BadRequestException('Email is required');
+
+  // @Post('/login-googgle')
+  // async loginGoogleController(@Body() body: { accessToken: string }) {
+  //   if (!body.accessToken) {
+  //     throw new UnauthorizedException('Acces token required');
   //   }
-  //   return this.authService.loginWithGoogleService(body.email);
+
+  //   return this.authService.loginWithGoogleService(body.accessToken)
+
+  // }
+
 
   @Post('/register-google')
   async registerGoogleController(

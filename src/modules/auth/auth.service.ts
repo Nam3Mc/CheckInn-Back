@@ -84,6 +84,7 @@ export class AuthService {
         throw new BadRequestException('Email is required');
       }
   
+      // Busca el usuario por email incluyendo la relación con la cuenta
       const user = await this.userService.getUsersByEmailService(email, {
         relations: ['accounts'],
       });
@@ -92,17 +93,21 @@ export class AuthService {
         throw new UnauthorizedException('User not registered with Google');
       }
   
+      // Obtén el id de la cuenta asociada
+      const accountId = user.accounts?.[0]?.id;
+  
       const payload = {
         email: user.email,
         id: user.id,
         roll: user.roll,
-        accountId: user.accounts,
+        accountId: accountId, // Solo el accountId en el payload
       };
   
+      // Genera el token JWT con el payload
       const accessToken = this.jwtService.sign(payload);
   
       return {
-        message: 'Google user logged successfully',  // Ahora está permitido
+        message: 'Google user logged successfully',
         accessToken,
       };
     } catch (error) {
