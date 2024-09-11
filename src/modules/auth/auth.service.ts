@@ -185,7 +185,7 @@ export class AuthService {
       id: foundUser.id,
       email: foundUser.email,
       phone: foundUser.phone,
-      roll: Roll.GUEST,
+      roll: Roll.USER,
     };
     const token = this.jwtService.sign(payload);
 
