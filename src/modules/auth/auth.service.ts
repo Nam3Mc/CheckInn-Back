@@ -93,23 +93,30 @@ export class AuthService {
       }
   
       // Obtén el id de la cuenta asociada
-      const accountId = user.accounts?.[0]?.id;
+      const accountId = user.accounts?.[0]?.id; // Esto obtiene el ID de la cuenta asociada
   
+      if (!accountId) {
+        throw new UnauthorizedException('No account associated with this user');
+      }
+  
+      // Crea el payload con el accountId
       const payload = {
         email: user.email,
         id: user.id,
         roll: user.roll,
-        accountId: accountId, // Solo el accountId en el payload
+        accountId: accountId, // Solo el ID de la cuenta
       };
   
       // Genera el token JWT con el payload
       const accessToken = this.jwtService.sign(payload);
   
+      // Retorna el usuario y el token
       return {
         user: {
           id: user.id,
           email: user.email,
           roll: user.roll,
+          accountId: accountId,  // Incluye el accountId en el objeto user
         },
         message: 'Google user logged successfully',
         accessToken,
@@ -119,6 +126,7 @@ export class AuthService {
       throw new UnauthorizedException('Error logging in with Google');
     }
   }
+  
   
 /*----------------------REGISTRO------------------*/
   async signUpService(user: Partial<User>) {
