@@ -14,7 +14,7 @@ class CustomIoAdapter extends IoAdapter {
   createIOServer(port: number, options?: ServerOptions): any {
     const corsOptions = {
       cors: {
-        origin: '*',
+        origin: 'http://localhost:3000',
         methods: ['GET', 'POST', 'DELETE', 'PUT'],
         credentials: true,
       },
