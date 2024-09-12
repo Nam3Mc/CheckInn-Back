@@ -58,9 +58,10 @@ export class MercadoPagoController {
   }
 
   @Post('notification')
-  // @Rolls(Roll.USER, Roll.ADMIN)
-  // @UseGuards(AuthGuard, RollsGuard)
-  async handlePaymentNotification(@Body() notificationData: any) {
+  async handlePaymentNotification(
+    @Body() notificationData: any,
+    @Res() res: Response,
+  ) {
     try {
       const { id, status, external_reference } = notificationData;
 
@@ -70,30 +71,39 @@ export class MercadoPagoController {
 
       const reservationId = external_reference;
 
-      if (status === 'approved') {
-        await this.mercadoPagoService.updateReservationStatus(
-          reservationId,
-          ReservationStatus.PAID,
-        );
-      } else if (status === 'pending') {
-        await this.mercadoPagoService.updateReservationStatus(
-          reservationId,
-          ReservationStatus.PENDING,
-        );
-      } else if (status === 'rejected') {
-        await this.mercadoPagoService.updateReservationStatus(
-          reservationId,
-          ReservationStatus.CANCELLED,
-        );
-      } else {
-        throw new BadRequestException('Unknown payment status');
+      switch (status) {
+        case 'approved':
+          await this.mercadoPagoService.updateReservationStatus(
+            reservationId,
+            ReservationStatus.PAID,
+          );
+          break;
+        case 'pending':
+          await this.mercadoPagoService.updateReservationStatus(
+            reservationId,
+            ReservationStatus.PENDING,
+          );
+          break;
+        case 'rejected':
+          await this.mercadoPagoService.updateReservationStatus(
+            reservationId,
+            ReservationStatus.CANCELLED,
+          );
+          break;
+        default:
+          console.warn(`Unhandled payment status: ${status}`);
       }
 
-      return { message: 'Notification processed successfully' };
+      // Responder a MercadoPago con un 200 para confirmar recepción
+      res
+        .status(HttpStatus.OK)
+        .json({ message: 'Notification processed successfully' });
     } catch (error) {
-      throw new BadRequestException(
-        `Error processing payment notification: ${error.message}`,
-      );
+      // Log de errores detallados y respuesta con un mensaje claro
+      console.error('Error processing payment notification:', error);
+      res.status(HttpStatus.BAD_REQUEST).json({
+        message: `Error processing payment notification: ${error.message}`,
+      });
     }
   }
 }
