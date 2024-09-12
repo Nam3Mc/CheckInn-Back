@@ -41,16 +41,24 @@ export class MercadoPagoService {
         );
 
       if (!reservation) {
+        console.error('Reservation not found:', paymentData.reservationId);
+
         throw new NotFoundException('Reservation not found');
       }
 
       if (reservation.status !== ReservationStatus.PENDING) {
+        console.error('Invalid Reservation Status:', reservation.status);
+
         throw new BadRequestException(
           'Reservation is not in a valid state for payment',
         );
       }
 
       if (paymentData.transaction_amount !== reservation.price) {
+        console.error('Transaction amount mismatch:', {
+          expected: reservation.price,
+          received: paymentData.transaction_amount,
+        });
         throw new BadRequestException(
           'Transaction amount does not match reservation total',
         );
@@ -59,9 +67,8 @@ export class MercadoPagoService {
       const preferenceData = {
         items: [
           {
-            id: '1',
-            title: paymentData.description,
-            status: 'inactive',
+            id: paymentData.reservationId, // Usa el ID de la reserva si es necesario
+            title: 'Hotel Reservation',
             quantity: 1,
             unit_price: paymentData.transaction_amount,
           },
@@ -84,6 +91,8 @@ export class MercadoPagoService {
         init_point: response.init_point,
       };
     } catch (error) {
+      console.error('Error creating payment preference:', error);
+
       throw new BadRequestException(
         `Error creating payment preference: ${error.message}`,
       );
