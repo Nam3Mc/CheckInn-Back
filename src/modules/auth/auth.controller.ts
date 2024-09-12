@@ -32,6 +32,7 @@ export class AuthController {
   //   return this.authService.loginWithGoogleService(body.accessToken)
 
   // }
+  
 
   @Post('/login-google')
   async loginGoogleController(@Body() body: { email: string }) {
@@ -51,9 +52,22 @@ export class AuthController {
     if (!body.name || !body.email) {
       throw new BadRequestException('Name and email are required');
     }
-    return this.authService.registerWithGoogle(body);
+  
+    try {
+      // Verificar si el usuario ya está registrado
+      const existingUser = await this.usersService.getUsersByEmailService(body.email);
+      if (existingUser) {
+        // Si ya está registrado, devolver el usuario existente
+        return existingUser; // O devolver algún token de autenticación si es necesario
+      }
+  
+      // Si no está registrado, proceder con el registro
+      return this.authService.registerWithGoogle(body);
+    } catch (error) {
+      throw new BadRequestException('Error registering user with Google');
+    }
   }
-
+  
   @Post('/signUp')
   @UseInterceptors(sensitiveInfoInterceptor)
   async signUpController(@Body() user: CreateUserDto) {

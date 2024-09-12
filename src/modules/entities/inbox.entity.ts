@@ -37,3 +37,26 @@ export class Inbox {
   @JoinColumn({ name: 'receiverId' })
   receiver: Account;
 }
+
+
+// import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+// import { Account } from './accounts.entity';
+
+// @Entity()
+// export class Inbox {
+//   @PrimaryGeneratedColumn('uuid')
+//   id: string;
+
+//   @Column()
+//   message: string;
+
+//   @ManyToOne(() => Account, (account) => account.sentMessages)
+//   sender: Account;
+
+//   @ManyToOne(() => Account, (account) => account.receivedMessages)
+//   receiver: Account;
+
+//   @CreateDateColumn()
+//   createdAt: Date;
+// }
+
