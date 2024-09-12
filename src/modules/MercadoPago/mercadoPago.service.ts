@@ -74,12 +74,12 @@ export class MercadoPagoService {
           },
         ],
         back_urls: {
-          success: 'http://localhost:3000/reservations',
-          failure: 'http://localhost:3000/reservations',
-          pending: 'http://localhost:3000/reservations',
+          success: 'https://check-inn-front.vercel.app/reservations',
+          failure: 'https://check-inn-front.vercel.app/reservations',
+          pending: 'https://check-inn-front.vercel.app/reservations',
         },
         auto_return: 'approved',
-        notification_url: 'http://localhost:8080/mercadopago/notification',
+        notification_url: 'https://checkinn-3nud.onrender.com/mercadopago/notification',
       };
 
       // Crea la preferencia de pago
