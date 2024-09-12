@@ -23,15 +23,13 @@ import { AuthGuard } from 'src/guards/auth.guard';
 @Controller('reservations')
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
-  
+
   @Get('availability/:roomId')
   async getRoomAvailability(@Param('roomId') roomId: string): Promise<Date[]> {
     return this.reservationsService.findRoomByAvalibity(roomId);
   }
 
-  
   @Get()
-  @Rolls(Roll.ADMIN)
   @UseGuards(RollsGuard)
   findAll() {
     return this.reservationsService.findAll();
@@ -65,11 +63,9 @@ export class ReservationsController {
   }
 
   @Delete(':id')
-  @Rolls(Roll.USER, Roll.ADMIN)
-  @UseGuards(AuthGuard, RollsGuard)
+  // @Rolls(Roll.USER, Roll.ADMIN)
+  // @UseGuards(AuthGuard, RollsGuard)
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(id);
   }
-
-  
 }
