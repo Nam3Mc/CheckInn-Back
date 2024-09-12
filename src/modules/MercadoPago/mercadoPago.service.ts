@@ -79,7 +79,7 @@ export class MercadoPagoService {
           pending: 'http://localhost:3000/reservations',
         },
         auto_return: 'approved',
-        notification_url: 'http://localhost:3000/mercadopago/notification',
+        notification_url: 'http://localhost:8080/mercadopago/notification',
       };
 
       // Crea la preferencia de pago
